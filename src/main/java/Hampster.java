@@ -1,7 +1,9 @@
+import java.util.Scanner;
+
 public class Hampster {
     public static void main(String[] args) {
 
-        final String LINE = "____________________________________________________________\n";
+        final String LINE = "\t____________________________________________________________\n";
 
         String banner = """
 [0;97;40m▄▄▄▄▄▄▄▄[0;37;40m▄[0;90;40m▄[0;97;40m▄▄▄▄▄▄▄▄[0;37;40m▄▄[0;90;40m▄[0;37;40m    [0;97;40m▄[0;97;47m▀▀▀▀▀▀▀[0;97;40m▄[0;37;40m          [0;97;40m█[0;97;47m▀▀▀▀▀▀▀▀▀▄[0;90;47m▀[0;37;40m▄[0;90;40m▄[0;37;40m [0;97;40m▄[0;97;47m▀▀▄[0;90;47m▀[0;37;40m▄[0;90;40m▄[0;37;40m        [0;97;40m▄▄[0;97;47m▀▀▀▀▀▄▄[0;90;47m▀[0;37;40m▄[0;90;40m▄[0;37;40m    [0;97;40m█[0;97;47m▀▀▀▀▀▀▀▀▀▀▄▄[0;90;47m▀[0;37;40m▄[0;90;40m▄[0;37;40m    [0;97;40m▄[0;97;47m▀[0;97;40m▀▀▀▀▀▀▀▀▀▀▀▀▀[0;97;47m▄▄[0;90;47m▀[0;37;40m▄[0;90;40m▄[0;37;40m     [0;97;40m▄[0;97;47m▀[0;97;40m▀▀▀▀▀[0;97;47m▄▄[0;90;47m▀[0;37;40m▄[0;90;40m▄[0;37;40m [0;97;40m█[0;97;47m▀▀▀▀▀▀▀▀▀▀▄▄[0;90;47m▀[0;37;40m▄[0;90;40m▄[0;37;40m    [0m
@@ -19,10 +21,30 @@ public class Hampster {
         System.out.println(LINE);
         System.out.println(banner);
         System.out.print(LINE);
-        System.out.println("Heh Heh Wasup broh I'm Hampster.");
-        System.out.println("Whaddya want?");
+        System.out.println("\n\tHeh Heh Wasup broh I'm Hampster.");
+        System.out.println("\tWhaddya want?");
         System.out.println(LINE);
-        System.out.println("Verabschiedung");
+
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("\tWhat can I do for you?");
+        System.out.println(LINE);
+
+        while (true) {
+            String command = scanner.nextLine();
+
+            System.out.println(LINE);
+
+            if (command.equals("bye")) {
+                break;
+            }
+
+            System.out.println("\t" + command);
+            System.out.println(LINE);
+        }
+
+        scanner.close();
+        System.out.println("\tVerabschiedung");
         System.out.println(LINE);
     }
 }
