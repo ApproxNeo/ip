@@ -30,7 +30,7 @@ public class Hampster {
         System.out.println("\tWhaddya want?");
         System.out.println(LINE);
 
-        List<String> tasks = new ArrayList<>();
+        List<Task> tasks = new ArrayList<>();
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -53,7 +53,7 @@ public class Hampster {
 
                 default:
                     System.out.println("\tAdded: " + command);
-                    tasks.add(command);
+                    tasks.add(new Task(command));
                     break;
             }
             System.out.println(LINE);
