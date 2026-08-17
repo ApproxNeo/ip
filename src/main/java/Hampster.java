@@ -7,9 +7,11 @@ public class Hampster {
 
         final String LINE = "\t____________________________________________________________\n";
 
-        /* 
-        Created with https://patorjk.com/software/taag/#p=display&f=ACID+3D+Blue&t=Hampster&x=none&v=4&h=4&w=80&we=false&ft=thedraw
-        */
+        /*
+         * Created with
+         * https://patorjk.com/software/taag/#p=display&f=ACID+3D+Blue&t=Hampster&x=none
+         * &v=4&h=4&w=80&we=false&ft=thedraw
+         */
         String banner = """
                 [0;97;40m▄▄▄▄▄▄▄▄[0;37;40m▄[0;90;40m▄[0;97;40m▄▄▄▄▄▄▄▄[0;37;40m▄▄[0;90;40m▄[0;37;40m    [0;97;40m▄[0;97;47m▀▀▀▀▀▀▀[0;97;40m▄[0;37;40m          [0;97;40m█[0;97;47m▀▀▀▀▀▀▀▀▀▄[0;90;47m▀[0;37;40m▄[0;90;40m▄[0;37;40m [0;97;40m▄[0;97;47m▀▀▄[0;90;47m▀[0;37;40m▄[0;90;40m▄[0;37;40m        [0;97;40m▄▄[0;97;47m▀▀▀▀▀▄▄[0;90;47m▀[0;37;40m▄[0;90;40m▄[0;37;40m    [0;97;40m█[0;97;47m▀▀▀▀▀▀▀▀▀▀▄▄[0;90;47m▀[0;37;40m▄[0;90;40m▄[0;37;40m    [0;97;40m▄[0;97;47m▀[0;97;40m▀▀▀▀▀▀▀▀▀▀▀▀▀[0;97;47m▄▄[0;90;47m▀[0;37;40m▄[0;90;40m▄[0;37;40m     [0;97;40m▄[0;97;47m▀[0;97;40m▀▀▀▀▀[0;97;47m▄▄[0;90;47m▀[0;37;40m▄[0;90;40m▄[0;37;40m [0;97;40m█[0;97;47m▀▀▀▀▀▀▀▀▀▀▄▄[0;90;47m▀[0;37;40m▄[0;90;40m▄[0;37;40m    [0m
                 [0;97;40m█[0;37;40m█▀▀▀▀▀[0;97;40m█[0;37;40m█[0;90;40m█[0;97;40m█[0;37;40m█▀▀▀▀▀[0;97;40m█[0;37;40m██[0;90;40m█[0;37;40m   [0;97;40m█[0;97;47m [0;37;40m▀  [0;96;40m▄▄■[0;37;40m [0;97;40m█[0;97;47m [0;90;40m▄[0;37;40m        [0;97;40m█[0;37;40m█       [0;96;40m▄[0;37;40m [0;97;40m▀[0;97;47m▄[0;37;40m█[0;97;40m█[0;37;40m  [0;96;40m▄[0;37;40m [0;97;40m▀[0;97;47m▄[0;37;40m█[0;90;47m▀[0;90;40m▄[0;37;40m    [0;97;40m▄[0;97;47m▀[0;37;40m▀   [0;96;40m■[0;37;40m [0;96;40m▄▄[0;37;40m [0;97;40m▀[0;97;47m▄[0;37;40m█[0;90;47m▀[0;90;40m▄[0;37;40m  [0;97;40m█[0;37;40m█      [0;96;40m■[0;37;40m [0;96;40m▄▄[0;37;40m [0;97;40m▀[0;97;47m▄[0;37;40m█[0;90;47m▀[0;90;40m▄[0;37;40m [0;97;40m█[0;37;40m█ [0;96;40m▄▀▀■·[0;37;40m  [0;96;40m·■▄[0;37;40m     [0;97;40m█[0;37;40m█[0;90;47m▀[0;90;40m▄[0;37;40m  [0;97;40m▄[0;97;47m▀[0;37;40m▀        [0;97;40m█[0;37;40m█[0;90;47m▀[0;90;40m▄[0;97;40m█[0;37;40m█      [0;96;40m■[0;37;40m [0;96;40m▄▄[0;37;40m [0;97;40m▀[0;97;47m▄[0;37;40m█[0;90;47m▀[0;90;40m▄[0;37;40m  [0m
@@ -35,10 +37,11 @@ public class Hampster {
 
         while (true) {
             String command = scanner.nextLine();
+            String[] parts = command.split(" ");
 
             System.out.println(LINE);
 
-            switch (command) {
+            switch (parts[0]) {
                 case "bye":
                     scanner.close();
                     System.out.println("\tVerabschiedung");
@@ -46,9 +49,15 @@ public class Hampster {
                     return;
 
                 case "list":
-                    for (int i = 0; i < tasks.size(); ++i) {
-                        System.out.println("\t" + (i+1) + ". " + tasks.get(i));
-                    }
+                    handleList(tasks);
+                    break;
+
+                case "mark":
+                    handleMark(parts, tasks, true);
+                    break;
+
+                case "unmark":
+                    handleMark(parts, tasks, false);
                     break;
 
                 default:
@@ -59,5 +68,45 @@ public class Hampster {
             System.out.println(LINE);
 
         }
+    }
+
+    private static void handleList(List<Task> tasks) {
+        System.out.println("\tListing your tasks broh");
+        for (int i = 0; i < tasks.size(); ++i) {
+            System.out.println("\t" + (i + 1) + ". " + tasks.get(i));
+
+        }
+
+    }
+
+    private static void handleMark(String[] parts, List<Task> tasks, boolean done) {
+        if (parts.length != 2) {
+            System.out.println("Usage: " + (done ? "mark" : "unmark") + " <task number>");
+            return;
+        }
+
+        int taskNumber;
+
+        try {
+            taskNumber = Integer.parseInt(parts[1]);
+        } catch (NumberFormatException e) {
+            System.out.println("Task number must be an integer.");
+            return;
+        }
+
+        if (taskNumber < 1 || taskNumber > tasks.size()) {
+            System.out.println("Invalid task number.");
+            return;
+        }
+
+        Task task = tasks.get(taskNumber - 1);
+        if (done) {
+            task.mark();
+            System.out.println("\tTask " + taskNumber + " marked donezo");
+        } else {
+            task.unmark();
+            System.out.println("\tTask " + taskNumber + " marked not donezo");
+        }
+        System.out.println("\t" + task.toString());
     }
 }
