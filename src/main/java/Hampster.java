@@ -68,6 +68,14 @@ public class Hampster {
                     handleTodo(parts, tasks);
                     break;
 
+                case "deadline":
+                    handleDeadline(parts, tasks);
+                    break;
+
+                case "event":
+                    handleEvent(parts, tasks);
+                    break;
+
                 default:
                     System.out.println("\tHuh?");
                     break;
@@ -122,6 +130,30 @@ public class Hampster {
                             .skip(1) 
                             .collect(Collectors.joining(" "));
         tasks.add(new ToDo(result));
+
+        System.out.println("\tAdding that task!");
+        handleList(tasks);
+        System.out.println("\tYou've got " + tasks.size() + " tasks");
+    }
+
+    private static void handleDeadline(String[] parts, List<Task> tasks) {
+        String result = Arrays.stream(parts)
+                            .skip(1) 
+                            .limit(parts.length - 3)
+                            .collect(Collectors.joining(" "));
+        tasks.add(new Deadline(result, parts[parts.length - 1]));
+
+        System.out.println("\tAdding that task!");
+        handleList(tasks);
+        System.out.println("\tYou've got " + tasks.size() + " tasks");
+    }
+
+    private static void handleEvent(String[] parts, List<Task> tasks) {
+        String result = Arrays.stream(parts)
+                            .skip(1) 
+                            .limit(parts.length - 5)
+                            .collect(Collectors.joining(" "));
+        tasks.add(new Event(result, parts[parts.length - 3], parts[parts.length - 1]));
 
         System.out.println("\tAdding that task!");
         handleList(tasks);
