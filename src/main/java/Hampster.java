@@ -1,6 +1,10 @@
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
+import java.util.stream.Collectors;
+
+import task.*;
 
 public class Hampster {
     public static void main(String[] args) {
@@ -60,9 +64,12 @@ public class Hampster {
                     handleMark(parts, tasks, false);
                     break;
 
+                case "todo":
+                    handleTodo(parts, tasks);
+                    break;
+
                 default:
-                    System.out.println("\tAdded: " + command);
-                    tasks.add(new Task(command));
+                    System.out.println("\tHuh?");
                     break;
             }
             System.out.println(LINE);
@@ -108,5 +115,16 @@ public class Hampster {
             System.out.println("\tTask " + taskNumber + " marked not donezo");
         }
         System.out.println("\t" + task.toString());
+    }
+
+    private static void handleTodo(String[] parts, List<Task> tasks) {
+        String result = Arrays.stream(parts)
+                            .skip(1) 
+                            .collect(Collectors.joining(" "));
+        tasks.add(new ToDo(result));
+
+        System.out.println("\tAdding that task!");
+        handleList(tasks);
+        System.out.println("\tYou've got " + tasks.size() + " tasks");
     }
 }
