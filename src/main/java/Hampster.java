@@ -40,10 +40,17 @@ public class Hampster {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            String command = scanner.nextLine();
-            String[] parts = command.split(" ");
+            String command = scanner.nextLine().trim();
 
             System.out.println(LINE);
+
+            if (command.isEmpty()) {
+                System.out.println("\tBroh... you didn't say anything.");
+                System.out.println(LINE);
+                continue;
+            }
+
+            String[] parts = command.split("\\s+");
 
             switch (parts[0]) {
                 case "bye":
@@ -77,7 +84,8 @@ public class Hampster {
                     break;
 
                 default:
-                    System.out.println("\tHuh?");
+                    System.out.println("\tBroh... I got no clue what that means.");
+                    System.out.println("\tTry one of these: todo, deadline, event, list, mark, unmark, bye");
                     break;
             }
             System.out.println(LINE);
@@ -96,7 +104,8 @@ public class Hampster {
 
     private static void handleMark(String[] parts, List<Task> tasks, boolean done) {
         if (parts.length != 2) {
-            System.out.println("Usage: " + (done ? "mark" : "unmark") + " <task number>");
+            System.out.println("\tBroh... gimme exactly one task number.");
+            System.out.println("\tTry: " + (done ? "mark" : "unmark") + " <task number>");
             return;
         }
 
@@ -105,58 +114,136 @@ public class Hampster {
         try {
             taskNumber = Integer.parseInt(parts[1]);
         } catch (NumberFormatException e) {
-            System.out.println("Task number must be an integer.");
+            System.out.println("\tBroh... '" + parts[1] + "' ain't a task number.");
             return;
         }
 
         if (taskNumber < 1 || taskNumber > tasks.size()) {
-            System.out.println("Invalid task number.");
+            System.out.println("\tBroh... task " + taskNumber + " doesn't exist.");
             return;
         }
 
         Task task = tasks.get(taskNumber - 1);
+
         if (done) {
             task.mark();
-            System.out.println("\tTask " + taskNumber + " marked donezo");
+            System.out.println("\tBoom. Task " + taskNumber + " is donezo.");
         } else {
             task.unmark();
-            System.out.println("\tTask " + taskNumber + " marked not donezo");
+            System.out.println("\tAight. Task " + taskNumber + " is back in action.");
         }
-        System.out.println("\t" + task.toString());
+
+        System.out.println("\t" + task);
     }
 
     private static void handleTodo(String[] parts, List<Task> tasks) {
-        String result = Arrays.stream(parts)
-                            .skip(1) 
-                            .collect(Collectors.joining(" "));
-        tasks.add(new ToDo(result));
+        String description = Arrays.stream(parts)
+                .skip(1)
+                .collect(Collectors.joining(" "))
+                .trim();
 
-        System.out.println("\tAdding that task!");
-        handleList(tasks);
-        System.out.println("\tYou've got " + tasks.size() + " tasks");
+        if (description.isEmpty()) {
+            System.out.println("\tBroh... you gotta tell me what the todo actually is.");
+            return;
+        }
+
+        tasks.add(new ToDo(description));
+
+        System.out.println("\tAight, added that todo broh.");
+        System.out.println("\t" + tasks.get(tasks.size() - 1));
+        System.out.println("\tYou've got " + tasks.size() + " tasks now.");
     }
 
     private static void handleDeadline(String[] parts, List<Task> tasks) {
-        String result = Arrays.stream(parts)
-                            .skip(1) 
-                            .limit(parts.length - 3)
-                            .collect(Collectors.joining(" "));
-        tasks.add(new Deadline(result, parts[parts.length - 1]));
+        String input = Arrays.stream(parts)
+                .skip(1)
+                .collect(Collectors.joining(" "))
+                .trim();
 
-        System.out.println("\tAdding that task!");
-        handleList(tasks);
-        System.out.println("\tYou've got " + tasks.size() + " tasks");
+        if (input.isEmpty()) {
+            System.out.println("\tBroh... a deadline needs a description.");
+            return;
+        }
+
+        String[] deadlineParts = input.split("\\s+/by\\s+", 2);
+
+        if (deadlineParts.length != 2) {
+            System.out.println("\tWhoa there broh, deadlines need a /by.");
+            System.out.println("\tTry: deadline <description> /by <date or time>");
+            return;
+        }
+
+        String description = deadlineParts[0].trim();
+        String by = deadlineParts[1].trim();
+
+        if (description.isEmpty()) {
+            System.out.println("\tBroh... what are you actually trying to get done?");
+            return;
+        }
+
+        if (by.isEmpty()) {
+            System.out.println("\tBroh... you forgot when this thing is due.");
+            return;
+        }
+
+        tasks.add(new Deadline(description, by));
+
+        System.out.println("\tDeadline locked in.");
+        System.out.println("\t" + tasks.get(tasks.size() - 1));
+        System.out.println("\tYou've got " + tasks.size() + " tasks now.");
     }
 
     private static void handleEvent(String[] parts, List<Task> tasks) {
-        String result = Arrays.stream(parts)
-                            .skip(1) 
-                            .limit(parts.length - 5)
-                            .collect(Collectors.joining(" "));
-        tasks.add(new Event(result, parts[parts.length - 3], parts[parts.length - 1]));
+        String input = Arrays.stream(parts)
+                .skip(1)
+                .collect(Collectors.joining(" "))
+                .trim();
 
-        System.out.println("\tAdding that task!");
-        handleList(tasks);
-        System.out.println("\tYou've got " + tasks.size() + " tasks");
+        if (input.isEmpty()) {
+            System.out.println("\tBroh... an event needs a description.");
+            return;
+        }
+
+        String[] eventParts = input.split("\\s+/from\\s+", 2);
+
+        if (eventParts.length != 2) {
+            System.out.println("\tBroh, events need a /from time.");
+            System.out.println("\tTry: event <description> /from <start> /to <end>");
+            return;
+        }
+
+        String description = eventParts[0].trim();
+        String[] timeParts = eventParts[1].split("\\s+/to\\s+", 2);
+
+        if (timeParts.length != 2) {
+            System.out.println("\tBroh, where does this event end?");
+            System.out.println("\tTry: event <description> /from <start> /to <end>");
+            return;
+        }
+
+        String from = timeParts[0].trim();
+        String to = timeParts[1].trim();
+
+        if (description.isEmpty()) {
+            System.out.println("\tBroh... tell me what the event actually is.");
+            return;
+        }
+
+        if (from.isEmpty()) {
+            System.out.println("\tBroh... you forgot when the event starts.");
+            return;
+        }
+
+        if (to.isEmpty()) {
+            System.out.println("\tBroh... you forgot when the event ends.");
+            return;
+        }
+
+        tasks.add(new Event(description, from, to));
+
+        System.out.println("\tEvent secured broh.");
+        System.out.println("\t" + tasks.get(tasks.size() - 1));
+        System.out.println("\tYou've got " + tasks.size() + " tasks now.");
     }
+
 }
