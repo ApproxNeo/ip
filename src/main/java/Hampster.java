@@ -40,60 +40,61 @@ public class Hampster {
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            String command = scanner.nextLine().trim();
+            String userInput = scanner.nextLine().trim();
 
             System.out.println(LINE);
 
             try {
-                if (command.isEmpty()) {
+                if (userInput.isBlank()) {
                     throw new HampsterException("Broh... you didn't say anything.");
                 }
 
-                String[] parts = command.split("\\s+");
+                String[] parts = userInput.trim().split("\\s+");
+                Command command = parseCommand(parts[0]);
 
-                switch (parts[0]) {
-                    case "bye":
+                switch (command) {
+                    case BYE:
                         scanner.close();
                         System.out.println("\tVerabschiedung");
                         System.out.println(LINE);
                         return;
 
-                    case "list":
+                    case LIST:
                         handleList(tasks);
                         break;
-
-                    case "mark":
+                    case MARK:
                         handleMark(parts, tasks, true);
                         break;
-
-                    case "unmark":
+                    case UNMARK:
                         handleMark(parts, tasks, false);
                         break;
-
-                    case "delete":
+                    case DELETE:
                         handleDelete(parts, tasks);
                         break;
-
-                    case "todo":
+                    case TODO:
                         handleTodo(parts, tasks);
                         break;
-
-                    case "deadline":
+                    case DEADLINE:
                         handleDeadline(parts, tasks);
                         break;
-
-                    case "event":
+                    case EVENT:
                         handleEvent(parts, tasks);
                         break;
-
-                    default:
-                        throw new HampsterException("Broh... I got no clue what that means.");
                 }
+
             } catch (HampsterException e) {
                 System.out.println("\tOOPS!!! " + e.getMessage());
             }
-
             System.out.println(LINE);
+        }
+    }
+
+    private static Command parseCommand(String word) throws HampsterException {
+        try {
+            return Command.valueOf(word.toUpperCase());
+        } catch (IllegalArgumentException e) {
+            throw new HampsterException(
+                    "Broh... I got no clue what that means.");
         }
     }
 
