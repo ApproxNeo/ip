@@ -1,6 +1,10 @@
 package hampster.ui;
 
+import java.util.Scanner;
+
 public class Ui {
+
+    private static final Scanner scanner = new Scanner(System.in);
 
     private static final String BANNER = """
             [0;97;40m▄▄▄▄▄▄▄▄[0;37;40m▄[0;90;40m▄[0;97;40m▄▄▄▄▄▄▄▄[0;37;40m▄▄[0;90;40m▄[0;37;40m    [0;97;40m▄[0;97;47m▀▀▀▀▀▀▀[0;97;40m▄[0;37;40m          [0;97;40m█[0;97;47m▀▀▀▀▀▀▀▀▀▄[0;90;47m▀[0;37;40m▄[0;90;40m▄[0;37;40m [0;97;40m▄[0;97;47m▀▀▄[0;90;47m▀[0;37;40m▄[0;90;40m▄[0;37;40m        [0;97;40m▄▄[0;97;47m▀▀▀▀▀▄▄[0;90;47m▀[0;37;40m▄[0;90;40m▄[0;37;40m    [0;97;40m█[0;97;47m▀▀▀▀▀▀▀▀▀▀▄▄[0;90;47m▀[0;37;40m▄[0;90;40m▄[0;37;40m    [0;97;40m▄[0;97;47m▀[0;97;40m▀▀▀▀▀▀▀▀▀▀▀▀▀[0;97;47m▄▄[0;90;47m▀[0;37;40m▄[0;90;40m▄[0;37;40m     [0;97;40m▄[0;97;47m▀[0;97;40m▀▀▀▀▀[0;97;47m▄▄[0;90;47m▀[0;37;40m▄[0;90;40m▄[0;37;40m [0;97;40m█[0;97;47m▀▀▀▀▀▀▀▀▀▀▄▄[0;90;47m▀[0;37;40m▄[0;90;40m▄[0;37;40m    [0m
@@ -26,9 +30,11 @@ public class Ui {
                 LINE);
     }
 
-    public void showGoodbye() {
+    public void shutdown() {
         System.out.println("\tVerabschiedung");
         System.out.println();
+        scanner.close();
+
     }
 
     public void showMessage(String msg) {
@@ -37,5 +43,9 @@ public class Ui {
 
     public void printLine() {
         System.out.println(LINE);
+    }
+
+    public String readLine() {
+        return scanner.nextLine().trim();
     }
 }

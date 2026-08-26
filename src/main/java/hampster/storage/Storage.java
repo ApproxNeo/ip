@@ -11,7 +11,7 @@ import hampster.task.Task;
 import hampster.task.ToDo;
 import hampster.task.Deadline;
 import hampster.task.Event;
-import hampster.DateTimeParser;
+import hampster.parser.DateTimeParser;
 import hampster.HampsterException;
 
 public class Storage {

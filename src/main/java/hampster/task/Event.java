@@ -2,7 +2,7 @@ package hampster.task;
 
 import java.time.LocalDateTime;
 
-import hampster.DateTimeParser;
+import hampster.parser.DateTimeParser;
 
 public class Event extends Task {
 

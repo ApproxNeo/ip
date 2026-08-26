@@ -14,7 +14,8 @@ import hampster.task.ToDo;
 import hampster.ui.Ui;
 import hampster.task.Deadline;
 import hampster.task.Event;
-import hampster.storage.*;
+import hampster.storage.Storage;
+import hampster.parser.DateTimeParser;
 
 public class Hampster {
 
@@ -31,11 +32,9 @@ public class Hampster {
             tasks = new ArrayList<>();
         }
 
-        Scanner scanner = new Scanner(System.in);
 
         while (true) {
-            String userInput = scanner.nextLine().trim();
-
+            String userInput = ui.readLine();
             ui.printLine();
 
             try {
@@ -48,7 +47,7 @@ public class Hampster {
 
                 switch (command) {
                     case BYE -> {
-                        ui.showGoodbye();
+                        ui.shutdown();
                         return;
                     }
 
