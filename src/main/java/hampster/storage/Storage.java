@@ -1,4 +1,5 @@
-package hampster;
+package hampster.storage;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -10,8 +11,10 @@ import hampster.task.Task;
 import hampster.task.ToDo;
 import hampster.task.Deadline;
 import hampster.task.Event;
+import hampster.DateTimeParser;
+import hampster.HampsterException;
 
-public class Savefile {
+public class Storage {
 
     private static final String FILE_NAME = "data.txt";
 

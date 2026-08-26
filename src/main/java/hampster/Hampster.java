@@ -14,6 +14,7 @@ import hampster.task.ToDo;
 import hampster.ui.Ui;
 import hampster.task.Deadline;
 import hampster.task.Event;
+import hampster.storage.*;
 
 public class Hampster {
 
@@ -25,7 +26,7 @@ public class Hampster {
         List<Task> tasks;
         
         try {
-            tasks = Savefile.load();
+            tasks = Storage.load();
         } catch (IOException e) {
             tasks = new ArrayList<>();
         }
@@ -75,7 +76,7 @@ public class Hampster {
                         break;
                 }
 
-                Savefile.save(tasks);
+                Storage.save(tasks);
 
             } catch (HampsterException e) {
                 ui.showMessage("\tBroh... " + e.getMessage());
