@@ -1,4 +1,4 @@
-package task;
+package hampster.task;
 
 public class Task {
     protected String description;

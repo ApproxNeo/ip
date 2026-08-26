@@ -1,3 +1,5 @@
+package hampster;
+
 public enum Command {
     BYE,
     LIST,

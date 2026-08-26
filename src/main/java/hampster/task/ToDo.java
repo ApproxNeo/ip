@@ -1,4 +1,4 @@
-package task;
+package hampster.task;
 
 import java.util.List;
 
@@ -14,7 +14,7 @@ public class ToDo extends Task {
 
     @Override
     public String saveString() {
-        return String.format("T,%s,%s", this.done ? "1" : "0", this.description);
+        return String.format("T|%s|%s", this.done ? "1" : "0", this.description);
     }
 
     @Override

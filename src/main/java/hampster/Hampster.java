@@ -1,11 +1,18 @@
+package hampster;
+
 import java.io.IOException;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeParseException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
 import java.util.stream.Collectors;
 
-import task.*;
+import hampster.task.Task;
+import hampster.task.ToDo;
+import hampster.task.Deadline;
+import hampster.task.Event;
 
 public class Hampster {
     public static void main(String[] args) {
@@ -93,7 +100,7 @@ public class Hampster {
                 Savefile.save(tasks);
 
             } catch (HampsterException e) {
-                System.out.println("\tOOPS!!! " + e.getMessage());
+                System.out.println("\tBroh... " + e.getMessage());
             }
             System.out.println(LINE);
         }
@@ -154,7 +161,7 @@ public class Hampster {
             throws HampsterException {
         if (parts.length != 2) {
             throw new HampsterException(
-                    "Broh... gimme exactly one task number. Try: delete <task number>");
+                    "Delete needs exactly one task number. Try: delete <task number>");
         }
 
         int taskNumber;
@@ -162,13 +169,11 @@ public class Hampster {
         try {
             taskNumber = Integer.parseInt(parts[1]);
         } catch (NumberFormatException e) {
-            throw new HampsterException(
-                    "Broh... '" + parts[1] + "' ain't a task number.");
+            throw new HampsterException(parts[1] + "' ain't a task number.");
         }
 
         if (taskNumber < 1 || taskNumber > tasks.size()) {
-            throw new HampsterException(
-                    "Broh... task " + taskNumber + " doesn't exist.");
+            throw new HampsterException("task " + taskNumber + " doesn't exist.");
         }
 
         Task removedTask = tasks.remove(taskNumber - 1);
@@ -187,7 +192,7 @@ public class Hampster {
 
         if (description.isEmpty()) {
             throw new HampsterException(
-                    "Broh... you gotta tell me what the todo actually is.");
+                    "You gotta tell me what the todo actually is.");
         }
 
         tasks.add(new ToDo(false, description));
@@ -206,28 +211,24 @@ public class Hampster {
 
         if (input.isEmpty()) {
             throw new HampsterException(
-                    "Broh... a deadline needs a description.");
+                    "Deadlines need a description.");
         }
 
         String[] deadlineParts = input.split("\\s+/by\\s+", 2);
 
         if (deadlineParts.length != 2) {
             throw new HampsterException(
-                    "Whoa there broh, deadlines need a /by. "
+                    "Deadlines need a /by. "
                             + "Try: deadline <description> /by <date or time>");
         }
 
         String description = deadlineParts[0].trim();
-        String by = deadlineParts[1].trim();
+        LocalDateTime by;
 
-        if (description.isEmpty()) {
-            throw new HampsterException(
-                    "Broh... what are you actually trying to get done?");
-        }
-
-        if (by.isEmpty()) {
-            throw new HampsterException(
-                    "Broh... you forgot when this thing is due.");
+        try {
+            by = DateTimeParser.parse(deadlineParts[1]);
+        } catch (DateTimeParseException e) {
+            throw new HampsterException(e.getMessage());
         }
 
         tasks.add(new Deadline(false, description, by));
@@ -246,14 +247,14 @@ public class Hampster {
 
         if (input.isEmpty()) {
             throw new HampsterException(
-                    "Broh... an event needs a description.");
+                    "Events need a description.");
         }
 
         String[] eventParts = input.split("\\s+/from\\s+", 2);
 
         if (eventParts.length != 2) {
             throw new HampsterException(
-                    "Broh, events need a /from time. "
+                    "Events need a /from time. "
                             + "Try: event <description> /from <start> /to <end>");
         }
 
@@ -262,26 +263,23 @@ public class Hampster {
 
         if (timeParts.length != 2) {
             throw new HampsterException(
-                    "Broh, where does this event end? "
+                    "Events need a /to time."
                             + "Try: event <description> /from <start> /to <end>");
         }
 
-        String from = timeParts[0].trim();
-        String to = timeParts[1].trim();
+        LocalDateTime from;
+        LocalDateTime to;
+        try {
+            from = DateTimeParser.parse(timeParts[0]);
+            to = DateTimeParser.parse(timeParts[1]);
+
+        } catch (DateTimeParseException e) {
+            throw new HampsterException(e.getMessage());
+        }
 
         if (description.isEmpty()) {
             throw new HampsterException(
-                    "Broh... tell me what the event actually is.");
-        }
-
-        if (from.isEmpty()) {
-            throw new HampsterException(
-                    "Broh... you forgot when the event starts.");
-        }
-
-        if (to.isEmpty()) {
-            throw new HampsterException(
-                    "Broh... you forgot when the event ends.");
+                    "Tell me what the event actually is.");
         }
 
         tasks.add(new Event(false, description, from, to));
