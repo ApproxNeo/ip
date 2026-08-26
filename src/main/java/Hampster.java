@@ -1,3 +1,4 @@
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -13,8 +14,7 @@ public class Hampster {
 
         /*
          * Created with
-         * https://patorjk.com/software/taag/#p=display&f=ACID+3D+Blue&t=Hampster&x=none
-         * &v=4&h=4&w=80&we=false&ft=thedraw
+         * https://patorjk.com/software/taag/#p=display&f=ACID+3D+Blue&t=Hampster&x=none&v=4&h=4&w=80&we=false&ft=thedraw
          */
         String banner = """
                 [0;97;40m▄▄▄▄▄▄▄▄[0;37;40m▄[0;90;40m▄[0;97;40m▄▄▄▄▄▄▄▄[0;37;40m▄▄[0;90;40m▄[0;37;40m    [0;97;40m▄[0;97;47m▀▀▀▀▀▀▀[0;97;40m▄[0;37;40m          [0;97;40m█[0;97;47m▀▀▀▀▀▀▀▀▀▄[0;90;47m▀[0;37;40m▄[0;90;40m▄[0;37;40m [0;97;40m▄[0;97;47m▀▀▄[0;90;47m▀[0;37;40m▄[0;90;40m▄[0;37;40m        [0;97;40m▄▄[0;97;47m▀▀▀▀▀▄▄[0;90;47m▀[0;37;40m▄[0;90;40m▄[0;37;40m    [0;97;40m█[0;97;47m▀▀▀▀▀▀▀▀▀▀▄▄[0;90;47m▀[0;37;40m▄[0;90;40m▄[0;37;40m    [0;97;40m▄[0;97;47m▀[0;97;40m▀▀▀▀▀▀▀▀▀▀▀▀▀[0;97;47m▄▄[0;90;47m▀[0;37;40m▄[0;90;40m▄[0;37;40m     [0;97;40m▄[0;97;47m▀[0;97;40m▀▀▀▀▀[0;97;47m▄▄[0;90;47m▀[0;37;40m▄[0;90;40m▄[0;37;40m [0;97;40m█[0;97;47m▀▀▀▀▀▀▀▀▀▀▄▄[0;90;47m▀[0;37;40m▄[0;90;40m▄[0;37;40m    [0m
@@ -36,7 +36,15 @@ public class Hampster {
         System.out.println("\tWhaddya want?");
         System.out.println(LINE);
 
-        List<Task> tasks = new ArrayList<>();
+        
+        List<Task> tasks;
+        
+        try {
+            tasks = Savefile.load();
+        } catch (IOException e) {
+            tasks = new ArrayList<>();
+        }
+
         Scanner scanner = new Scanner(System.in);
 
         while (true) {
@@ -81,6 +89,8 @@ public class Hampster {
                         handleEvent(parts, tasks);
                         break;
                 }
+
+                Savefile.save(tasks);
 
             } catch (HampsterException e) {
                 System.out.println("\tOOPS!!! " + e.getMessage());
@@ -180,7 +190,7 @@ public class Hampster {
                     "Broh... you gotta tell me what the todo actually is.");
         }
 
-        tasks.add(new ToDo(description));
+        tasks.add(new ToDo(false, description));
 
         System.out.println("\tAight, added that todo broh.");
         System.out.println("\t" + tasks.get(tasks.size() - 1));
@@ -220,7 +230,7 @@ public class Hampster {
                     "Broh... you forgot when this thing is due.");
         }
 
-        tasks.add(new Deadline(description, by));
+        tasks.add(new Deadline(false, description, by));
 
         System.out.println("\tDeadline locked in.");
         System.out.println("\t" + tasks.get(tasks.size() - 1));
@@ -274,7 +284,7 @@ public class Hampster {
                     "Broh... you forgot when the event ends.");
         }
 
-        tasks.add(new Event(description, from, to));
+        tasks.add(new Event(false, description, from, to));
 
         System.out.println("\tEvent secured broh.");
         System.out.println("\t" + tasks.get(tasks.size() - 1));
