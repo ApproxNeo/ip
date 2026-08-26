@@ -47,33 +47,18 @@ public class Hampster {
                 Command command = parseCommand(parts[0]);
 
                 switch (command) {
-                    case BYE:
-                        scanner.close();
-                        ui.showMessage("\tVerabschiedung");
-                        ui.printLine();
+                    case BYE -> {
+                        ui.showGoodbye();
                         return;
+                    }
 
-                    case LIST:
-                        handleList(tasks);
-                        break;
-                    case MARK:
-                        handleMark(parts, tasks, true);
-                        break;
-                    case UNMARK:
-                        handleMark(parts, tasks, false);
-                        break;
-                    case DELETE:
-                        handleDelete(parts, tasks);
-                        break;
-                    case TODO:
-                        handleTodo(parts, tasks);
-                        break;
-                    case DEADLINE:
-                        handleDeadline(parts, tasks);
-                        break;
-                    case EVENT:
-                        handleEvent(parts, tasks);
-                        break;
+                    case LIST -> handleList(tasks);
+                    case MARK -> handleMark(parts, tasks, true);
+                    case UNMARK -> handleMark(parts, tasks, false);
+                    case DELETE -> handleDelete(parts, tasks);
+                    case TODO -> handleTodo(parts, tasks);
+                    case DEADLINE -> handleDeadline(parts, tasks);
+                    case EVENT -> handleEvent(parts, tasks);
                 }
 
                 Storage.save(tasks);

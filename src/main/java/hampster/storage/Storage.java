@@ -52,20 +52,10 @@ public class Storage {
                     String[] parts = line.split("\\|");
 
                     switch (parts[0]) {
-                        case "T":
-                            tasks.add(parseToDo(parts));
-                            break;
-
-                        case "D":
-                            tasks.add(parseDeadline(parts));
-                            break;
-
-                        case "E":
-                            tasks.add(parseEvent(parts));
-                            break;
-
-                        default:
-                            throw new HampsterException("Unknown task type: " + parts[0]);
+                        case "T" -> tasks.add(parseToDo(parts));
+                        case "D" -> tasks.add(parseDeadline(parts));
+                        case "E" -> tasks.add(parseEvent(parts));
+                        default -> throw new HampsterException("Unknown task type: " + parts[0]);
                     }
                 } catch (HampsterException e) {
                     System.out.println("Savefile load() error: " + e.getMessage());
