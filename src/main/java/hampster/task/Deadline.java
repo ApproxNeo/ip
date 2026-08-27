@@ -13,6 +13,10 @@ public class Deadline extends Task {
         this.by = by;
     }
 
+    public Deadline(String description, LocalDateTime by) {
+        this(false, description, by);
+    }
+
     // public Deadline(List<String> parts) {
     //     this(parts.get(1).equals("1") ? true : false, parts.get(2), parts.get(3));
     // }

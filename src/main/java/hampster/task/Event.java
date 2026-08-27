@@ -15,9 +15,9 @@ public class Event extends Task {
         this.to = to;
     }
 
-    // public Event(List<String> parts) {
-    //     this(parts.get(1).equals("1") ? true : false, parts.get(2), parts.get(3), parts.get(4));
-    // }
+    public Event(String description, LocalDateTime from, LocalDateTime to) {
+        this(false, description, from, to);
+    }
 
     @Override
     public String saveString() {
