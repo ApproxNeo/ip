@@ -1,7 +1,5 @@
 package hampster.task;
 
-import java.util.List;
-
 /**
  * Represents a simple task without a deadline or event time.
  */

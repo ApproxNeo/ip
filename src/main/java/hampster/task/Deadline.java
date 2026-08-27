@@ -10,7 +10,7 @@ import hampster.parser.DateTimeParser;
 public class Deadline extends Task {
 
     /** The date and time by which the task should be completed. */
-    private LocalDateTime by;
+    private final LocalDateTime by;
 
     /**
      * Creates a deadline task with the specified completion status.
@@ -47,6 +47,7 @@ public class Deadline extends Task {
                 this.description,
                 DateTimeParser.deparse(this.by)
         );
+
     }
 
     /**
@@ -57,6 +58,6 @@ public class Deadline extends Task {
     @Override
     public String toString() {
         return "[D]" + super.toString()
-                + " (by: " + DateTimeParser.deparse(this.by) + ")";
+                + " (by: " + DateTimeParser.deparse(by) + ")";
     }
 }

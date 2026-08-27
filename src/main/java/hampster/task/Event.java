@@ -10,10 +10,10 @@ import hampster.parser.DateTimeParser;
 public class Event extends Task {
 
     /** The event start time. */
-    private LocalDateTime from;
+    private final LocalDateTime from;
 
     /** The event end time. */
-    private LocalDateTime to;
+    private final LocalDateTime to;
 
     /**
      * Creates an event with the given completion status, description,
@@ -74,7 +74,7 @@ public class Event extends Task {
     @Override
     public String toString() {
         return "[E]" + super.toString()
-                + " (from: " + DateTimeParser.deparse(this.from)
-                + " to: " + DateTimeParser.deparse(this.to) + ")";
+                + " (from: " + DateTimeParser.deparse(from)
+                + " to: " + DateTimeParser.deparse(to) + ")";
     }
 }

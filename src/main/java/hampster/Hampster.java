@@ -2,25 +2,24 @@ package hampster;
 
 import java.io.IOException;
 
-import hampster.ui.Ui;
-import hampster.storage.Storage;
-import hampster.parser.CommandParser;
 import hampster.command.Command;
 import hampster.exception.HampsterException;
-import hampster.task.TaskList;;
+import hampster.parser.CommandParser;
+import hampster.storage.Storage;
+import hampster.task.TaskList;
+import hampster.ui.Ui;
 
 public class Hampster {
 
-    private static Ui ui;
     public static void main(String[] args) {
-        ui = new Ui();
+        Ui ui = new Ui();
         ui.showWelcome();
-        
+
         TaskList tasks;
-        
+
         try {
             tasks = Storage.load();
-        } catch (IOException e) {
+        } catch (IOException exception) {
             tasks = new TaskList();
         }
 
@@ -36,10 +35,10 @@ public class Hampster {
                 Command command = CommandParser.parse(userInput);
                 command.execute(tasks, ui);
                 Storage.save(tasks);
-
-            } catch (HampsterException e) {
-                ui.showMessage("\tBroh... " + e.getMessage());
+            } catch (HampsterException exception) {
+                ui.showMessage("\tBroh... " + exception.getMessage());
             }
+
             ui.printLine();
         }
     }

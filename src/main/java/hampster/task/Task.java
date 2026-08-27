@@ -30,7 +30,8 @@ public abstract class Task {
      * @return the new completion status
      */
     public boolean toggleState() {
-        return this.done = !this.done;
+        done = !done;
+        return done;
     }
 
     /**
@@ -47,6 +48,6 @@ public abstract class Task {
      */
     @Override
     public String toString() {
-        return (this.done ? "[X]" : "[ ]") + " " + this.description;
+        return (done ? "[X]" : "[ ]") + " " + description;
     }
 }
