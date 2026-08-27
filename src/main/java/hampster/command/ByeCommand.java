@@ -2,10 +2,9 @@ package hampster.command;
 
 import java.util.List;
 
-import hampster.HampsterException;
+import hampster.exception.HampsterException;
 import hampster.task.Task;
 import hampster.ui.Ui;
-
 public class ByeCommand extends Command {
 
     public ByeCommand(String[] parts) throws HampsterException {

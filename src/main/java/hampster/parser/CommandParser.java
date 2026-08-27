@@ -1,6 +1,6 @@
 package hampster.parser;
 
-import hampster.HampsterException;
+import hampster.exception.HampsterException;
 import hampster.command.ByeCommand;
 import hampster.command.Command;
 import hampster.command.DeadlineCommand;

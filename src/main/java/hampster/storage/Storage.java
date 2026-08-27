@@ -8,11 +8,12 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import hampster.task.Task;
+import hampster.task.TaskList;
 import hampster.task.ToDo;
 import hampster.task.Deadline;
 import hampster.task.Event;
 import hampster.parser.DateTimeParser;
-import hampster.HampsterException;
+import hampster.exception.HampsterException;
 
 public class Storage {
 
@@ -33,14 +34,14 @@ public class Storage {
         }
     }
 
-    public static List<Task> load() throws IOException {
+    public static TaskList load() throws IOException {
         Path path = Path.of(FILE_NAME);
 
         if (!Files.exists(path)) {
-            return new ArrayList<>();
+            return new TaskList();
         }
 
-        List<Task> tasks = new ArrayList<>();
+        TaskList tasks = new TaskList();
 
         try (Stream<String> lines = Files.lines(path)) {
             for (String line : lines.toList()) {

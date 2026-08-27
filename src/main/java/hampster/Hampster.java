@@ -1,14 +1,13 @@
 package hampster;
 
 import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
-import hampster.task.Task;
 import hampster.ui.Ui;
 import hampster.storage.Storage;
 import hampster.parser.CommandParser;
-import hampster.command.Command;;
+import hampster.command.Command;
+import hampster.exception.HampsterException;
+import hampster.task.TaskList;;
 
 public class Hampster {
 
@@ -17,12 +16,12 @@ public class Hampster {
         ui = new Ui();
         ui.showWelcome();
         
-        List<Task> tasks;
+        TaskList tasks;
         
         try {
             tasks = Storage.load();
         } catch (IOException e) {
-            tasks = new ArrayList<>();
+            tasks = new TaskList();
         }
 
         while (true) {

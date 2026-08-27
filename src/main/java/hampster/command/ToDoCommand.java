@@ -4,7 +4,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import hampster.HampsterException;
+import hampster.exception.HampsterException;
 import hampster.task.Task;
 import hampster.task.ToDo;
 import hampster.ui.Ui;

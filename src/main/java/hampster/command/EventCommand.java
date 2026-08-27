@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.stream.Collectors;
 
-import hampster.HampsterException;
+import hampster.exception.HampsterException;
 import hampster.parser.DateTimeParser;
 import hampster.task.Event;
 import hampster.task.Task;
