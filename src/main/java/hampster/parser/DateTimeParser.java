@@ -1,4 +1,4 @@
-package hampster;
+package hampster.parser;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;

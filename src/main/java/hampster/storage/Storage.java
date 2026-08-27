@@ -1,4 +1,5 @@
-package hampster;
+package hampster.storage;
+
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -7,11 +8,14 @@ import java.util.List;
 import java.util.stream.Stream;
 
 import hampster.task.Task;
+import hampster.task.TaskList;
 import hampster.task.ToDo;
 import hampster.task.Deadline;
 import hampster.task.Event;
+import hampster.parser.DateTimeParser;
+import hampster.exception.HampsterException;
 
-public class Savefile {
+public class Storage {
 
     private static final String FILE_NAME = "data.txt";
 
@@ -30,14 +34,14 @@ public class Savefile {
         }
     }
 
-    public static List<Task> load() throws IOException {
+    public static TaskList load() throws IOException {
         Path path = Path.of(FILE_NAME);
 
         if (!Files.exists(path)) {
-            return new ArrayList<>();
+            return new TaskList();
         }
 
-        List<Task> tasks = new ArrayList<>();
+        TaskList tasks = new TaskList();
 
         try (Stream<String> lines = Files.lines(path)) {
             for (String line : lines.toList()) {
@@ -49,20 +53,10 @@ public class Savefile {
                     String[] parts = line.split("\\|");
 
                     switch (parts[0]) {
-                        case "T":
-                            tasks.add(parseToDo(parts));
-                            break;
-
-                        case "D":
-                            tasks.add(parseDeadline(parts));
-                            break;
-
-                        case "E":
-                            tasks.add(parseEvent(parts));
-                            break;
-
-                        default:
-                            throw new HampsterException("Unknown task type: " + parts[0]);
+                        case "T" -> tasks.add(parseToDo(parts));
+                        case "D" -> tasks.add(parseDeadline(parts));
+                        case "E" -> tasks.add(parseEvent(parts));
+                        default -> throw new HampsterException("Unknown task type: " + parts[0]);
                     }
                 } catch (HampsterException e) {
                     System.out.println("Savefile load() error: " + e.getMessage());

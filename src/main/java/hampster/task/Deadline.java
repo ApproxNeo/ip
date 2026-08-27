@@ -2,7 +2,7 @@ package hampster.task;
 
 import java.time.LocalDateTime;
 
-import hampster.DateTimeParser;
+import hampster.parser.DateTimeParser;
 
 public class Deadline extends Task {
 
@@ -11,6 +11,10 @@ public class Deadline extends Task {
     public Deadline(boolean done, String description, LocalDateTime by) {
         super(done, description);
         this.by = by;
+    }
+
+    public Deadline(String description, LocalDateTime by) {
+        this(false, description, by);
     }
 
     // public Deadline(List<String> parts) {

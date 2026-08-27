@@ -17,6 +17,10 @@ public class Task {
         this.done = false;
     }
     
+    public boolean toggleState() {
+        return this.done = !this.done;
+    }
+
     public String saveString() {
         return "T," + (this.done ? 1 : 0) + "," + this.description;
     }

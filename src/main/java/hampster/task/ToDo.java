@@ -8,6 +8,10 @@ public class ToDo extends Task {
         super(done, description);
     }
 
+    public ToDo(String description) {
+        this(false, description);
+    }
+
     public ToDo(List<String> parts) {
         this(parts.get(1).equals("1") ? true : false, parts.get(2));
     }
