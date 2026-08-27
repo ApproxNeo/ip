@@ -6,8 +6,8 @@ import hampster.parser.DateTimeParser;
 
 public class Event extends Task {
 
-    private LocalDateTime from;
-    private LocalDateTime to;
+    private final LocalDateTime from;
+    private final LocalDateTime to;
 
     public Event(boolean done, String description, LocalDateTime from, LocalDateTime to) {
         super(done, description);
@@ -21,12 +21,18 @@ public class Event extends Task {
 
     @Override
     public String saveString() {
-        return String.format("E|%s|%s|%s|%s", this.done ? "1" : "0", this.description, DateTimeParser.deparse(this.from), DateTimeParser.deparse(this.to));
+        return String.format(
+                "E|%s|%s|%s|%s",
+                done ? "1" : "0",
+                description,
+                DateTimeParser.deparse(from),
+                DateTimeParser.deparse(to));
     }
+
     @Override
     public String toString() {
         return "[E]" + super.toString()
-                + " (from: " + DateTimeParser.deparse(this.from)
-                + " to: " + DateTimeParser.deparse(this.to) + ")";
+                + " (from: " + DateTimeParser.deparse(from)
+                + " to: " + DateTimeParser.deparse(to) + ")";
     }
 }

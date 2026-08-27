@@ -13,12 +13,15 @@ public class ToDo extends Task {
     }
 
     public ToDo(List<String> parts) {
-        this(parts.get(1).equals("1") ? true : false, parts.get(2));
+        this("1".equals(parts.get(1)), parts.get(2));
     }
 
     @Override
     public String saveString() {
-        return String.format("T|%s|%s", this.done ? "1" : "0", this.description);
+        return String.format(
+                "T|%s|%s",
+                done ? "1" : "0",
+                description);
     }
 
     @Override

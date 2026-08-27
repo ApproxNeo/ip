@@ -1,9 +1,6 @@
 package hampster.command;
 
-import java.util.List;
-
 import hampster.exception.HampsterException;
-import hampster.task.Task;
 import hampster.task.TaskList;
 import hampster.ui.Ui;
 
@@ -34,7 +31,7 @@ public class DeleteCommand extends Command {
             throw new HampsterException("Task " + taskNumber + " doesn't exist.");
         }
 
-        
+        tasks.remove(taskNumber);
         
         ui.showMessage("\tNoted broh. I've removed this task:");
         ui.showMessage("\t  " + tasks.get(taskNumber));

@@ -6,7 +6,7 @@ import hampster.parser.DateTimeParser;
 
 public class Deadline extends Task {
 
-    private LocalDateTime by;
+    private final LocalDateTime by;
 
     public Deadline(boolean done, String description, LocalDateTime by) {
         super(done, description);
@@ -17,17 +17,18 @@ public class Deadline extends Task {
         this(false, description, by);
     }
 
-    // public Deadline(List<String> parts) {
-    //     this(parts.get(1).equals("1") ? true : false, parts.get(2), parts.get(3));
-    // }
-
     @Override
     public String saveString() {
-        return String.format("D|%s|%s|%s", this.done ? "1" : "0", this.description, DateTimeParser.deparse(this.by));
+        return String.format(
+                "D|%s|%s|%s",
+                done ? "1" : "0",
+                description,
+                DateTimeParser.deparse(by));
     }
 
     @Override
     public String toString() {
-        return "[D]" + super.toString() + " (by: " + DateTimeParser.deparse(this.by) + ")";
+        return "[D]" + super.toString()
+                + " (by: " + DateTimeParser.deparse(by) + ")";
     }
 }

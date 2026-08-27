@@ -1,6 +1,7 @@
 package hampster.task;
 
 public class Task {
+
     protected String description;
     protected boolean done;
 
@@ -9,23 +10,17 @@ public class Task {
         this.done = done;
     }
 
-    public void mark() {
-        this.done = true;
-    }
-
-    public void unmark() {
-        this.done = false;
-    }
-    
     public boolean toggleState() {
-        return this.done = !this.done;
+        done = !done;
+        return done;
     }
 
     public String saveString() {
-        return "T," + (this.done ? 1 : 0) + "," + this.description;
+        return "T," + (done ? 1 : 0) + "," + description;
     }
+
     @Override
     public String toString() {
-        return (this.done ? "[X]" : "[ ]" ) + " " + this.description;
+        return (done ? "[X]" : "[ ]") + " " + description;
     }
 }
