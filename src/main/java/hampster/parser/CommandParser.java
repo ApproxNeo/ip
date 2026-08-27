@@ -4,11 +4,12 @@ import hampster.exception.HampsterException;
 import hampster.command.ByeCommand;
 import hampster.command.Command;
 import hampster.command.DeadlineCommand;
+import hampster.command.DeleteCommand;
+import hampster.command.EventCommand;
+import hampster.command.FindCommand;
 import hampster.command.ListCommand;
 import hampster.command.MarkCommand;
 import hampster.command.ToDoCommand;
-import hampster.command.DeleteCommand;
-import hampster.command.EventCommand;
 
 public class CommandParser {
 
@@ -18,9 +19,9 @@ public class CommandParser {
         String cmd = parts[0].toUpperCase();
         return switch (cmd) {
             case "BYE" -> new ByeCommand(parts);
-            case "LIST" -> new ListCommand(parts); // handleList(tasks);
+            case "LIST" -> new ListCommand(parts);
             case "MARK" -> new MarkCommand(parts);
-            // case "UNMARK" -> handleMark(parts, tasks, false);
+            case "FIND" -> new FindCommand(parts);
             case "DELETE" -> new DeleteCommand(parts);
             case "TODO" -> new ToDoCommand(parts);
             case "DEADLINE" -> new DeadlineCommand(parts);
