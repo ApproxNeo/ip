@@ -2,6 +2,12 @@ package hampster.ui;
 
 import java.util.Scanner;
 
+/**
+ * Provides console-based input and output functionality for Hampster.
+ *
+ * <p>This class displays messages and banners to the console and reads
+ * user input from standard input.</p>
+ */
 public class Ui {
 
     private static final Scanner scanner = new Scanner(System.in);
@@ -21,6 +27,9 @@ public class Ui {
 
     private static final String LINE = "\t____________________________________________________________\n";
 
+    /**
+     * Displays the Hampster welcome banner and greeting message.
+     */
     public void showWelcome() {
         System.out.println(LINE + "\n" +
                 BANNER + "\n" +
@@ -30,6 +39,11 @@ public class Ui {
                 LINE);
     }
 
+    /**
+     * Displays the shutdown message and closes the input scanner.
+     *
+     * <p>Closing the scanner also closes {@code System.in}.</p>
+     */
     public void shutdown() {
         System.out.println("\tVerabschiedung");
         System.out.println();
@@ -37,14 +51,30 @@ public class Ui {
 
     }
 
+    /**
+     * Displays a message to the user.
+     *
+     * @param msg message to display
+     */
     public void showMessage(String msg) {
         System.out.println(msg);
     }
 
+    /**
+     * Prints a horizontal separator line to the console.
+     */
     public void printLine() {
         System.out.println(LINE);
     }
 
+    /**
+     * Reads a line of input from the user and removes leading and trailing
+     * whitespace.
+     *
+     * @return the trimmed user input
+     * @throws java.util.NoSuchElementException if no input line is available
+     * @throws IllegalStateException if the scanner has already been closed
+     */
     public String readLine() {
         return scanner.nextLine().trim();
     }

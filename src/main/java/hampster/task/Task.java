@@ -1,31 +1,52 @@
 package hampster.task;
 
-public class Task {
+/**
+ * Represents a general task with a description and completion status.
+ *
+ * <p>Concrete task types must provide their own storage format.</p>
+ */
+public abstract class Task {
+
+    /** The task description. */
     protected String description;
+
+    /** Whether the task has been completed. */
     protected boolean done;
 
-    public Task(boolean done, String description) {
+    /**
+     * Creates a task.
+     *
+     * @param done whether the task is initially completed
+     * @param description the task description
+     */
+    protected Task(boolean done, String description) {
         this.description = description;
         this.done = done;
     }
 
-    public void mark() {
-        this.done = true;
-    }
-
-    public void unmark() {
-        this.done = false;
-    }
-    
+    /**
+     * Toggles the completion status of the task.
+     *
+     * @return the new completion status
+     */
     public boolean toggleState() {
         return this.done = !this.done;
     }
 
-    public String saveString() {
-        return "T," + (this.done ? 1 : 0) + "," + this.description;
-    }
+    /**
+     * Converts the task into its storage format.
+     *
+     * @return a serialized representation of the task
+     */
+    public abstract String saveString();
+
+    /**
+     * Returns a user-readable representation of the task.
+     *
+     * @return the task status and description
+     */
     @Override
     public String toString() {
-        return (this.done ? "[X]" : "[ ]" ) + " " + this.description;
+        return (this.done ? "[X]" : "[ ]") + " " + this.description;
     }
 }
