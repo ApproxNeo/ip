@@ -4,6 +4,7 @@ import java.util.List;
 
 import hampster.exception.HampsterException;
 import hampster.task.Task;
+import hampster.task.TaskList;
 import hampster.ui.Ui;
 
 public class DeleteCommand extends Command {
@@ -16,7 +17,7 @@ public class DeleteCommand extends Command {
         }
 
         try {
-            taskNumber = Integer.parseInt(parts[1]);
+            taskNumber = Integer.parseInt(parts[1]) - 1;
         } catch (NumberFormatException e) {
             throw new HampsterException(
                     "'" + parts[1] + "' ain't a task number.");
@@ -28,10 +29,12 @@ public class DeleteCommand extends Command {
     }
 
     @Override
-    public void execute(List<Task> tasks, Ui ui) throws HampsterException {
-        if (taskNumber > tasks.size()) {
+    public void execute(TaskList tasks, Ui ui) throws HampsterException {
+        if (taskNumber >= tasks.size()) {
             throw new HampsterException("Task " + taskNumber + " doesn't exist.");
         }
+
+        
         
         ui.showMessage("\tNoted broh. I've removed this task:");
         ui.showMessage("\t  " + tasks.get(taskNumber));

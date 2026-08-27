@@ -1,9 +1,7 @@
 package hampster.command;
 
-import java.util.List;
-
 import hampster.exception.HampsterException;
-import hampster.task.Task;
+import hampster.task.TaskList;
 import hampster.ui.Ui;
 
 public class MarkCommand extends Command {
@@ -28,7 +26,7 @@ public class MarkCommand extends Command {
     }
 
     @Override
-    public void execute(List<Task> tasks, Ui ui) throws HampsterException {
+    public void execute(TaskList tasks, Ui ui) throws HampsterException {
         if (taskNumber > tasks.size()) {
             throw new HampsterException("Task " + taskNumber + " doesn't exist.");
         }

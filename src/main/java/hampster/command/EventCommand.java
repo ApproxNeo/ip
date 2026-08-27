@@ -3,13 +3,12 @@ package hampster.command;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import hampster.exception.HampsterException;
 import hampster.parser.DateTimeParser;
 import hampster.task.Event;
-import hampster.task.Task;
+import hampster.task.TaskList;
 import hampster.ui.Ui;
 
 public class EventCommand extends Command {
@@ -60,7 +59,7 @@ public class EventCommand extends Command {
     }
     
     @Override
-    public void execute(List<Task> tasks, Ui ui) {
+    public void execute(TaskList tasks, Ui ui) {
         tasks.add(new Event(false, description, from, to));
 
         ui.showMessage("\tEvent secured broh.");

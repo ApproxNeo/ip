@@ -1,11 +1,10 @@
 package hampster.command;
 
 import java.util.Arrays;
-import java.util.List;
 import java.util.stream.Collectors;
 
 import hampster.exception.HampsterException;
-import hampster.task.Task;
+import hampster.task.TaskList;
 import hampster.task.ToDo;
 import hampster.ui.Ui;
 
@@ -25,7 +24,7 @@ public class ToDoCommand extends Command {
     }
     
     @Override
-    public void execute(List<Task> tasks, Ui ui) {
+    public void execute(TaskList tasks, Ui ui) {
         System.out.println(description);
         tasks.add(new ToDo(description));
 

@@ -1,9 +1,7 @@
 package hampster.command;
 
-import java.util.List;
-
 import hampster.exception.HampsterException;
-import hampster.task.Task;
+import hampster.task.TaskList;
 import hampster.ui.Ui;
 
 public class ListCommand extends Command {
@@ -15,7 +13,7 @@ public class ListCommand extends Command {
     }
     
     @Override
-    public void execute(List<Task> tasks, Ui ui) {
+    public void execute(TaskList tasks, Ui ui) {
         ui.showMessage("\tListing your tasks broh");
         for (int i = 0; i < tasks.size(); ++i) {
             ui.showMessage("\t" + (i + 1) + ". " + tasks.get(i));

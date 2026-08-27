@@ -1,9 +1,7 @@
 package hampster.command;
 
-import java.util.List;
-
 import hampster.exception.HampsterException;
-import hampster.task.Task;
+import hampster.task.TaskList;
 import hampster.ui.Ui;
 public class ByeCommand extends Command {
 
@@ -14,7 +12,7 @@ public class ByeCommand extends Command {
     }
     
     @Override
-    public void execute(List<Task> tasks, Ui ui) {
+    public void execute(TaskList tasks, Ui ui) {
         ui.shutdown();
     }
 }
