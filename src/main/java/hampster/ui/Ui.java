@@ -52,12 +52,14 @@ public class Ui {
     }
 
     /**
-     * Displays a message to the user.
+     * Displays one or more messages to the user.
      *
-     * @param msg message to display
+     * @param messages messages to display
      */
-    public void showMessage(String msg) {
-        System.out.println(msg);
+    public void showMessage(String... messages) {
+        for (String message : messages) {
+            System.out.println(message);
+        }
     }
 
     /**

@@ -33,8 +33,10 @@ public class MainWindow extends AnchorPane {
 
     private final Ui outputUi = new Ui() {
         @Override
-        public void showMessage(String message) {
-            dialogContainer.getChildren().add(createMessage(message, false));
+        public void showMessage(String... messages) {
+            for (String message : messages) {
+                dialogContainer.getChildren().add(createMessage(message, false));
+            }
         }
 
         @Override

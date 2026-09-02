@@ -30,8 +30,9 @@ public class ToDoCommand extends Command {
         System.out.println(description);
         tasks.add(new ToDo(description));
 
-        ui.showMessage("\tAight, added that todo broh.");
-        ui.showMessage("\t" + tasks.get(tasks.size() - 1));
-        ui.showMessage("\tYou've got " + tasks.size() + " tasks now.");
+        ui.showMessage(
+            "\tAight, added that todo broh.",
+            "\t" + tasks.get(tasks.size() - 1),
+            "\tYou've got " + tasks.size() + " tasks now.");
     }
 }
