@@ -4,9 +4,11 @@ import hampster.exception.HampsterException;
 import hampster.task.TaskList;
 import hampster.ui.Ui;
 
+/** Command that removes a task from the task list. */
 public class DeleteCommand extends Command {
-    int taskNumber;
+    private int taskNumber;
 
+    /** Creates a delete command for the requested task number. */
     public DeleteCommand(String[] parts) throws HampsterException {
         if (parts.length != 2) {
             throw new HampsterException(
@@ -32,7 +34,7 @@ public class DeleteCommand extends Command {
         }
 
         tasks.remove(taskNumber);
-        
+
         ui.showMessage("\tNoted broh. I've removed this task:");
         ui.showMessage("\t  " + tasks.get(taskNumber));
         ui.showMessage("\tNow you've got " + tasks.size() + " tasks in the list.");

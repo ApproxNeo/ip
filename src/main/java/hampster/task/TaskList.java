@@ -26,6 +26,7 @@ public class TaskList extends ArrayList<Task> {
         }
     }
 
+    /** Finds tasks whose descriptions contain the specified keyword. */
     public TaskList find(String keyword) {
         TaskList matchingTasks = new TaskList();
 

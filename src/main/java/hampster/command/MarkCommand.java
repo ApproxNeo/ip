@@ -4,9 +4,11 @@ import hampster.exception.HampsterException;
 import hampster.task.TaskList;
 import hampster.ui.Ui;
 
+/** Command that toggles the completion status of a task. */
 public class MarkCommand extends Command {
-    int taskNumber;
+    private int taskNumber;
 
+    /** Creates a mark command for the requested task number. */
     public MarkCommand(String[] parts) throws HampsterException {
         if (parts.length != 2) {
             throw new HampsterException(
@@ -30,7 +32,7 @@ public class MarkCommand extends Command {
         if (taskNumber > tasks.size()) {
             throw new HampsterException("Task " + taskNumber + " doesn't exist.");
         }
-        
+
         if (tasks.get(taskNumber).toggleState()) {
             ui.showMessage("\tBoom. Task " + taskNumber + " is donezo.");
         } else {

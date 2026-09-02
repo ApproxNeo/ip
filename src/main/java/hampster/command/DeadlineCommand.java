@@ -11,10 +11,12 @@ import hampster.task.Deadline;
 import hampster.task.TaskList;
 import hampster.ui.Ui;
 
+/** Command that creates a task with a deadline. */
 public class DeadlineCommand extends Command {
-    String description;
-    LocalDateTime by;
+    private String description;
+    private LocalDateTime by;
 
+    /** Creates a deadline command from the user's input parts. */
     public DeadlineCommand(String[] parts) throws HampsterException {
         String input = Arrays.stream(parts)
                 .skip(1)
@@ -42,7 +44,7 @@ public class DeadlineCommand extends Command {
             throw new HampsterException(e.getMessage());
         }
     }
-    
+
     @Override
     public void execute(TaskList tasks, Ui ui) {
         tasks.add(new Deadline(false, description, by));
@@ -50,6 +52,6 @@ public class DeadlineCommand extends Command {
         ui.showMessage("\tDeadline locked in.");
         ui.showMessage("\t" + tasks.get(tasks.size() - 1));
         ui.showMessage("\tYou've got " + tasks.size() + " tasks now.");
-    
+
     }
 }

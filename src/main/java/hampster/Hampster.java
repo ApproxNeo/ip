@@ -9,6 +9,7 @@ import hampster.storage.Storage;
 import hampster.task.TaskList;
 import hampster.ui.Ui;
 
+/** Runs the Hampster command-line task manager. */
 public class Hampster {
 
     public static void main(String[] args) {

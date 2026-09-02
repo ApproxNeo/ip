@@ -4,10 +4,12 @@ import hampster.exception.HampsterException;
 import hampster.task.TaskList;
 import hampster.ui.Ui;
 
+/** Command that finds tasks containing a keyword. */
 public class FindCommand extends Command {
 
     private final String keyword;
 
+    /** Creates a find command for the requested keyword. */
     public FindCommand(String[] parts) throws HampsterException {
         if (parts.length != 2) {
             throw new HampsterException(

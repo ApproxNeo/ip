@@ -8,9 +8,11 @@ import hampster.task.TaskList;
 import hampster.task.ToDo;
 import hampster.ui.Ui;
 
+/** Command that creates a todo task. */
 public class ToDoCommand extends Command {
-    String description;
+    private String description;
 
+    /** Creates a todo command from the user's input parts. */
     public ToDoCommand(String[] parts) throws HampsterException {
         description = Arrays.stream(parts)
                 .skip(1)
@@ -22,7 +24,7 @@ public class ToDoCommand extends Command {
                     "ToDo needs a description.");
         }
     }
-    
+
     @Override
     public void execute(TaskList tasks, Ui ui) {
         System.out.println(description);

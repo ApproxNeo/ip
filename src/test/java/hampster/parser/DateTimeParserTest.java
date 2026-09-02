@@ -32,25 +32,18 @@ class DateTimeParserTest {
 
     @Test
     void parse_invalidFormatting_throwsDateTimeParseException() {
-        assertThrows(
-                DateTimeParseException.class,
-                () -> DateTimeParser.parse("15 September 2026, 05:30 PM")
-        );
+        assertThrows(DateTimeParseException.class, () -> DateTimeParser.parse("15 September 2026, 05:30 PM"));
     }
 
     @Test
     void parse_invalidHour_throwsDateTimeParseException() {
-        assertThrows(
-                DateTimeParseException.class,
-                () -> DateTimeParser.parse("15/9/2026 2560")
-        );
+        assertThrows(DateTimeParseException.class, () -> DateTimeParser.parse("15/9/2026 2560"));
     }
 
     @Test
     void parseFromSave_validSavedDeadline_returnsExpectedDateTime() {
         LocalDateTime result = DateTimeParser.parseFromSave(
-                "Sep 15 2026, 05:30 PM"
-        );
+                "Sep 15 2026, 05:30 PM");
 
         assertEquals(
                 LocalDateTime.of(2026, 9, 15, 17, 30),
@@ -61,8 +54,7 @@ class DateTimeParserTest {
     @Test
     void parseFromSave_validSavedEventTime_returnsExpectedDateTime() {
         LocalDateTime result = DateTimeParser.parseFromSave(
-                "Aug 27 2026, 09:30 AM"
-        );
+                "Aug 27 2026, 09:30 AM");
 
         assertEquals(
                 LocalDateTime.of(2026, 8, 27, 9, 30),
@@ -72,10 +64,7 @@ class DateTimeParserTest {
 
     @Test
     void parseFromSave_invalidFormatting_throwsDateTimeParseException() {
-        assertThrows(
-                DateTimeParseException.class,
-                () -> DateTimeParser.parseFromSave("15/9/2026 1730")
-        );
+        assertThrows(DateTimeParseException.class, () -> DateTimeParser.parseFromSave("15/9/2026 1730"));
     }
 
     @Test

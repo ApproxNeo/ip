@@ -11,11 +11,13 @@ import hampster.task.Event;
 import hampster.task.TaskList;
 import hampster.ui.Ui;
 
+/** Command that creates a task representing an event. */
 public class EventCommand extends Command {
-    String description;
-    LocalDateTime from;
-    LocalDateTime to;
+    private String description;
+    private LocalDateTime from;
+    private LocalDateTime to;
 
+    /** Creates an event command from the user's input parts. */
     public EventCommand(String[] parts) throws HampsterException {
         String input = Arrays.stream(parts)
                 .skip(1)
@@ -57,13 +59,13 @@ public class EventCommand extends Command {
                     "Tell me what the event actually is.");
         }
     }
-    
+
     @Override
     public void execute(TaskList tasks, Ui ui) {
         tasks.add(new Event(false, description, from, to));
 
         ui.showMessage("\tEvent secured broh.");
         ui.showMessage("\t" + tasks.get(tasks.size() - 1));
-        ui.showMessage("\tYou've got " + tasks.size() + " tasks now.");    
+        ui.showMessage("\tYou've got " + tasks.size() + " tasks now.");
     }
 }
