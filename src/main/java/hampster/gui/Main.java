@@ -23,6 +23,8 @@ public class Main extends Application {
             Scene scene = new Scene(fxmlLoader.load());
 
             stage.setTitle("Hampster");
+            stage.setMinWidth(400.0);
+            stage.setMinHeight(600.0);
             stage.setScene(scene);
             stage.show();
         } catch (IOException exception) {
