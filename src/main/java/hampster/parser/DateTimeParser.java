@@ -3,6 +3,7 @@ package hampster.parser;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.time.format.DateTimeParseException;
+import java.util.Locale;
 
 /**
  * Provides utility methods for parsing and formatting date-time values.
@@ -23,7 +24,7 @@ public final class DateTimeParser {
      * <p>Expected format: {@code MMM dd uuuu, hh:mm a}</p>
      */
     private static final DateTimeFormatter outputFormat =
-            DateTimeFormatter.ofPattern("MMM dd uuuu, hh:mm a");
+            DateTimeFormatter.ofPattern("MMM dd uuuu, hh:mm a", Locale.ENGLISH);
 
     /**
      * Parses a user-entered date-time string.
