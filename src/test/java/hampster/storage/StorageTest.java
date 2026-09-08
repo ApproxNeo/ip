@@ -77,27 +77,27 @@ class StorageTest {
         assertEquals(5, tasks.size());
 
         assertEquals(
-                "D|0|Submit CS2103T project proposal|Jan 15 2026, 09:00 AM",
+                "D|0|Submit CS2103T project proposal|Jan 15 2026, 09:00 AM|",
                 tasks.get(0).saveString()
         );
 
         assertEquals(
-                "T|0|Buy groceries for Sunday dinner",
+                "T|0|Buy groceries for Sunday dinner|",
                 tasks.get(1).saveString()
         );
 
         assertEquals(
-                "E|0|Meet project team at Central Library|Jan 20 2026, 02:00 PM|Jan 20 2026, 03:30 PM",
+                "E|0|Meet project team at Central Library|Jan 20 2026, 02:00 PM|Jan 20 2026, 03:30 PM|",
                 tasks.get(2).saveString()
         );
 
         assertEquals(
-                "T|1|Complete weekly reading assignment",
+                "T|1|Complete weekly reading assignment|",
                 tasks.get(3).saveString()
         );
 
         assertEquals(
-                "D|1|Renew passport before overseas trip|Jan 25 2026, 11:30 AM",
+                "D|1|Renew passport before overseas trip|Jan 25 2026, 11:30 AM|",
                 tasks.get(4).saveString()
         );
     }
@@ -117,11 +117,11 @@ class StorageTest {
 
         assertEquals(2, tasks.size());
         assertEquals(
-                "T|0|Prepare slides for Monday presentation",
+                "T|0|Prepare slides for Monday presentation|",
                 tasks.get(0).saveString()
         );
         assertEquals(
-                "D|0|Submit application before registration closes|Jan 18 2026, 05:00 PM",
+                "D|0|Submit application before registration closes|Jan 18 2026, 05:00 PM|",
                 tasks.get(1).saveString()
         );
     }
@@ -140,11 +140,11 @@ class StorageTest {
 
         assertEquals(2, tasks.size());
         assertEquals(
-                "T|0|Attend tutorial consultation",
+                "T|0|Attend tutorial consultation|",
                 tasks.get(0).saveString()
         );
         assertEquals(
-                "T|1|Complete database revision",
+                "T|1|Complete database revision|",
                 tasks.get(1).saveString()
         );
     }
@@ -170,9 +170,9 @@ class StorageTest {
 
         assertEquals(
                 List.of(
-                        "T|0|Buy groceries for Sunday dinner",
-                        "D|0|Submit CS2103T project proposal|Jan 15 2026, 09:00 AM",
-                        "E|0|Meet project team at Central Library|Jan 20 2026, 02:00 PM|Jan 20 2026, 03:30 PM"
+                        "T|0|Buy groceries for Sunday dinner|",
+                        "D|0|Submit CS2103T project proposal|Jan 15 2026, 09:00 AM|",
+                        "E|0|Meet project team at Central Library|Jan 20 2026, 02:00 PM|Jan 20 2026, 03:30 PM|"
                 ),
                 Files.readAllLines(DATA_FILE)
         );
