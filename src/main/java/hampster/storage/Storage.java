@@ -66,31 +66,39 @@ public class Storage {
         TaskList tasks = new TaskList();
 
         try (Stream<String> lines = Files.lines(path)) {
-            for (String line : lines.toList()) {
-                try {
-                    if (line.isBlank()) {
-                        continue;
-                    }
-
-                    String[] parts = line.split("\\|");
-
-                    switch (parts[0]) {
-                        case "T" -> tasks.add(parseToDo(parts));
-                        case "D" -> tasks.add(parseDeadline(parts));
-                        case "E" -> tasks.add(parseEvent(parts));
-                        default -> throw new HampsterException(
-                                "Unknown task type: " + parts[0]
-                        );
-                    }
-                } catch (HampsterException e) {
-                    System.out.println(
-                            "Savefile load() error: " + e.getMessage()
-                    );
-                }
-            }
+            lines.forEach(line -> loadLine(line, tasks));
         }
 
         return tasks;
+    }
+
+    /** Loads one non-blank save-file line into the task list. */
+    private static void loadLine(String line, TaskList tasks) {
+        if (line.isBlank()) {
+            return;
+        }
+
+        try {
+            tasks.add(parseTask(line));
+        } catch (HampsterException exception) {
+            System.out.println(
+                    "Savefile load() error: " + exception.getMessage()
+            );
+        }
+    }
+
+    /** Converts a save-file record into its corresponding task. */
+    private static Task parseTask(String line) throws HampsterException {
+        String[] parts = line.split("\\|");
+
+        return switch (parts[0]) {
+            case "T" -> parseToDo(parts);
+            case "D" -> parseDeadline(parts);
+            case "E" -> parseEvent(parts);
+            default -> throw new HampsterException(
+                    "Unknown task type: " + parts[0]
+            );
+        };
     }
 
     /**
