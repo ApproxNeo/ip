@@ -15,6 +15,11 @@ public class ToDo extends Task {
         super(done, description);
     }
 
+    /** Creates a to-do task with an optional tag. */
+    public ToDo(boolean done, String description, String tag) {
+        super(done, description, tag);
+    }
+
     /**
      * Creates an incomplete to-do task.
      *
@@ -32,9 +37,10 @@ public class ToDo extends Task {
     @Override
     public String saveString() {
         return String.format(
-                "T|%s|%s",
+            "T|%s|%s|%s",
                 this.done ? "1" : "0",
-                this.description
+            this.description,
+            this.tag
         );
     }
 

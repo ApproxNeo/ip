@@ -9,6 +9,7 @@ import java.util.stream.Stream;
 
 import hampster.exception.HampsterException;
 import hampster.parser.DateTimeParser;
+import hampster.parser.TagParser;
 import hampster.task.Deadline;
 import hampster.task.Event;
 import hampster.task.Task;
@@ -89,7 +90,7 @@ public class Storage {
 
     /** Converts a save-file record into its corresponding task. */
     private static Task parseTask(String line) throws HampsterException {
-        String[] parts = line.split("\\|");
+        String[] parts = line.split("\\|", -1);
 
         return switch (parts[0]) {
             case "T" -> parseToDo(parts);
@@ -113,11 +114,15 @@ public class Storage {
      */
     private static ToDo parseToDo(String[] parts)
             throws HampsterException {
-        if (parts.length != 3) {
+        if (parts.length != 3 && parts.length != 4) {
             throw new HampsterException("Invalid ToDo format");
         }
 
-        return new ToDo(parts[1].equals("1"), parts[2]);
+        return new ToDo(
+            parts[1].equals("1"),
+            parts[2],
+            parseTag(parts, 3)
+        );
     }
 
     /**
@@ -134,14 +139,15 @@ public class Storage {
      */
     private static Deadline parseDeadline(String[] parts)
             throws HampsterException {
-        if (parts.length != 4) {
+        if (parts.length != 4 && parts.length != 5) {
             throw new HampsterException("Invalid Deadline format");
         }
 
         return new Deadline(
                 parts[1].equals("1"),
                 parts[2],
-                DateTimeParser.parseFromSave(parts[3])
+            DateTimeParser.parseFromSave(parts[3]),
+            parseTag(parts, 4)
         );
     }
 
@@ -159,7 +165,7 @@ public class Storage {
      */
     private static Event parseEvent(String[] parts)
             throws HampsterException {
-        if (parts.length != 5) {
+        if (parts.length != 5 && parts.length != 6) {
             throw new HampsterException("Invalid Event format");
         }
 
@@ -167,7 +173,21 @@ public class Storage {
                 parts[1].equals("1"),
                 parts[2],
                 DateTimeParser.parseFromSave(parts[3]),
-                DateTimeParser.parseFromSave(parts[4])
+                DateTimeParser.parseFromSave(parts[4]),
+                parseTag(parts, 5)
         );
+    }
+
+    /** Loads a valid tag, silently discarding an invalid stored tag. */
+    private static String parseTag(String[] parts, int index) {
+        if (parts.length <= index || parts[index].isEmpty()) {
+            return "";
+        }
+
+        try {
+            return TagParser.normalize(parts[index]);
+        } catch (HampsterException exception) {
+            return "";
+        }
     }
 }

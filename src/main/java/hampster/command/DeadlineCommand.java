@@ -7,14 +7,16 @@ import java.util.stream.Collectors;
 
 import hampster.exception.HampsterException;
 import hampster.parser.DateTimeParser;
+import hampster.parser.TagParser;
 import hampster.task.Deadline;
 import hampster.task.TaskList;
 import hampster.ui.Ui;
 
 /** Command that creates a task with a deadline. */
 public class DeadlineCommand extends Command {
-    private String description;
-    private LocalDateTime by;
+    private final String description;
+    private final String tag;
+    private final LocalDateTime by;
 
     /** Creates a deadline command from the user's input parts. */
     public DeadlineCommand(String[] parts) throws HampsterException {
@@ -28,7 +30,10 @@ public class DeadlineCommand extends Command {
                     "Deadlines need a description.");
         }
 
-        String[] deadlineParts = input.split("\\s+/by\\s+", 2);
+        TagParser.ParsedInput parsedInput = TagParser.parseOption(input);
+        tag = parsedInput.tag();
+
+        String[] deadlineParts = parsedInput.description().split("\\s+/by\\s+", 2);
 
         if (deadlineParts.length != 2) {
             throw new HampsterException(
@@ -47,7 +52,7 @@ public class DeadlineCommand extends Command {
 
     @Override
     public void execute(TaskList tasks, Ui ui) {
-        tasks.add(new Deadline(false, description, by));
+        tasks.add(new Deadline(false, description, by, tag));
 
         ui.showMessage("\tDeadline locked in.");
         ui.showMessage("\t" + tasks.get(tasks.size() - 1));

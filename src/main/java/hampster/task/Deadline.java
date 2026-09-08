@@ -24,6 +24,17 @@ public class Deadline extends Task {
         this.by = by;
     }
 
+    /** Creates a deadline task with an optional tag. */
+    public Deadline(
+            boolean done,
+            String description,
+            LocalDateTime by,
+            String tag
+    ) {
+        super(done, description, tag);
+        this.by = by;
+    }
+
     /**
      * Creates an incomplete deadline task.
      *
@@ -42,10 +53,11 @@ public class Deadline extends Task {
     @Override
     public String saveString() {
         return String.format(
-                "D|%s|%s|%s",
+            "D|%s|%s|%s|%s",
                 this.done ? "1" : "0",
                 this.description,
-                DateTimeParser.deparse(this.by)
+            DateTimeParser.deparse(this.by),
+            this.tag
         );
 
     }

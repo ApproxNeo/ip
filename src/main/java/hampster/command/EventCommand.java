@@ -7,15 +7,17 @@ import java.util.stream.Collectors;
 
 import hampster.exception.HampsterException;
 import hampster.parser.DateTimeParser;
+import hampster.parser.TagParser;
 import hampster.task.Event;
 import hampster.task.TaskList;
 import hampster.ui.Ui;
 
 /** Command that creates a task representing an event. */
 public class EventCommand extends Command {
-    private String description;
-    private LocalDateTime from;
-    private LocalDateTime to;
+    private final String description;
+    private final String tag;
+    private final LocalDateTime from;
+    private final LocalDateTime to;
 
     /** Creates an event command from the user's input parts. */
     public EventCommand(String[] parts) throws HampsterException {
@@ -29,7 +31,10 @@ public class EventCommand extends Command {
                     "Events need a description.");
         }
 
-        String[] eventParts = input.split("\\s+/from\\s+", 2);
+        TagParser.ParsedInput parsedInput = TagParser.parseOption(input);
+        tag = parsedInput.tag();
+
+        String[] eventParts = parsedInput.description().split("\\s+/from\\s+", 2);
 
         if (eventParts.length != 2) {
             throw new HampsterException(
@@ -62,7 +67,7 @@ public class EventCommand extends Command {
 
     @Override
     public void execute(TaskList tasks, Ui ui) {
-        tasks.add(new Event(false, description, from, to));
+        tasks.add(new Event(false, description, from, to, tag));
 
         ui.showMessage("\tEvent secured broh.");
         ui.showMessage("\t" + tasks.get(tasks.size() - 1));

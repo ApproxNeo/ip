@@ -1,5 +1,7 @@
 package hampster.task;
 
+import java.util.Locale;
+
 /**
  * Represents a general task with a description and completion status.
  *
@@ -13,6 +15,9 @@ public abstract class Task {
     /** Whether the task has been completed. */
     protected boolean done;
 
+    /** The optional task tag. */
+    protected String tag;
+
     /**
      * Creates a task.
      *
@@ -20,10 +25,22 @@ public abstract class Task {
      * @param description the task description
      */
     protected Task(boolean done, String description) {
+        this(done, description, "");
+    }
+
+    /**
+     * Creates a task with a tag.
+     *
+     * @param done whether the task is initially completed
+     * @param description the task description
+     * @param tag the optional task tag
+     */
+    protected Task(boolean done, String description, String tag) {
         assert description != null : "Task description must not be null";
         assert !description.isBlank() : "Task description must not be blank";
         this.description = description;
         this.done = done;
+        this.tag = tag == null ? "" : tag;
     }
 
     /**
@@ -34,6 +51,26 @@ public abstract class Task {
     public boolean toggleState() {
         done = !done;
         return done;
+    }
+
+    /** Sets this task's tag. */
+    public void setTag(String tag) {
+        this.tag = tag == null ? "" : tag.toLowerCase(Locale.ROOT);
+    }
+
+    /** Removes this task's tag. */
+    public void removeTag() {
+        tag = "";
+    }
+
+    /** Returns this task's tag, or an empty string when untagged. */
+    public String getTag() {
+        return tag;
+    }
+
+    /** Returns the tag suffix used in user-facing task displays. */
+    protected String tagDisplay() {
+        return tag.isEmpty() ? "" : " " + tag;
     }
 
     /**
@@ -50,6 +87,6 @@ public abstract class Task {
      */
     @Override
     public String toString() {
-        return (done ? "[X]" : "[ ]") + " " + description;
+        return (done ? "[X]" : "[ ]") + " " + description + tagDisplay();
     }
 }

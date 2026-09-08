@@ -8,7 +8,9 @@ import hampster.command.EventCommand;
 import hampster.command.FindCommand;
 import hampster.command.ListCommand;
 import hampster.command.MarkCommand;
+import hampster.command.TagCommand;
 import hampster.command.ToDoCommand;
+import hampster.command.UntagCommand;
 import hampster.exception.HampsterException;
 
 /**
@@ -46,6 +48,8 @@ public class CommandParser {
             case "TODO" -> new ToDoCommand(parts);
             case "DEADLINE" -> new DeadlineCommand(parts);
             case "EVENT" -> new EventCommand(parts);
+            case "TAG" -> new TagCommand(parts);
+            case "UNTAG" -> new UntagCommand(parts);
             default -> throw new HampsterException("invalid instruction");
         };
     }

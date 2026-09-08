@@ -38,6 +38,22 @@ public class Event extends Task {
         this.to = to;
     }
 
+    /** Creates an event with an optional tag. */
+    public Event(
+            boolean done,
+            String description,
+            LocalDateTime from,
+            LocalDateTime to,
+            String tag
+    ) {
+        super(done, description, tag);
+        assert from != null : "Event start time must not be null";
+        assert to != null : "Event end time must not be null";
+        assert !to.isBefore(from) : "Event end time must not be before start time";
+        this.from = from;
+        this.to = to;
+    }
+
     /**
      * Creates an incomplete event.
      *
@@ -61,11 +77,12 @@ public class Event extends Task {
     @Override
     public String saveString() {
         return String.format(
-                "E|%s|%s|%s|%s",
+            "E|%s|%s|%s|%s|%s",
                 this.done ? "1" : "0",
                 this.description,
                 DateTimeParser.deparse(this.from),
-                DateTimeParser.deparse(this.to)
+            DateTimeParser.deparse(this.to),
+            this.tag
         );
     }
 
