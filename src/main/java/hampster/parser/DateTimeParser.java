@@ -26,6 +26,10 @@ public final class DateTimeParser {
     private static final DateTimeFormatter outputFormat =
             DateTimeFormatter.ofPattern("MMM dd uuuu, hh:mm a", Locale.ENGLISH);
 
+    /** Error message used when a date-time does not match its expected format. */
+    private static final String INVALID_DATETIME_MESSAGE =
+            "Datetimes needs to be in d/M/uuuu HHmm (e.g. 2/12/2019 1800)";
+
     /**
      * Parses a user-entered date-time string.
      *
@@ -34,17 +38,7 @@ public final class DateTimeParser {
      * @throws DateTimeParseException if the input has an invalid format
      */
     public static LocalDateTime parse(String dateTime) {
-        try {
-            return LocalDateTime.parse(dateTime, inputFormat);
-
-        } catch (DateTimeParseException e) {
-            throw new DateTimeParseException(
-                    "Datetimes needs to be in d/M/uuuu HHmm "
-                            + "(e.g. 2/12/2019 1800)",
-                    dateTime,
-                    0
-            );
-        }
+        return parseDateTime(dateTime, inputFormat);
     }
 
     /**
@@ -55,13 +49,18 @@ public final class DateTimeParser {
      * @throws DateTimeParseException if the input has an invalid format
      */
     public static LocalDateTime parseFromSave(String dateTime) {
-        try {
-            return LocalDateTime.parse(dateTime, outputFormat);
+        return parseDateTime(dateTime, outputFormat);
+    }
 
-        } catch (DateTimeParseException e) {
+    /** Parses a date-time with the supplied format and standardizes parse errors. */
+    private static LocalDateTime parseDateTime(
+            String dateTime, DateTimeFormatter format) {
+        try {
+            return LocalDateTime.parse(dateTime, format);
+
+        } catch (DateTimeParseException exception) {
             throw new DateTimeParseException(
-                    "Datetimes needs to be in d/M/uuuu HHmm "
-                            + "(e.g. 2/12/2019 1800)",
+                    INVALID_DATETIME_MESSAGE,
                     dateTime,
                     0
             );

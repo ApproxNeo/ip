@@ -6,29 +6,19 @@ import hampster.ui.Ui;
 
 /** Command that toggles the completion status of a task. */
 public class MarkCommand extends Command {
-    private int taskNumber;
+    private final int taskNumber;
 
     /** Creates a mark command for the requested task number. */
     public MarkCommand(String[] parts) throws HampsterException {
-        if (parts.length != 2) {
-            throw new HampsterException(
-                    "Mark needs exactly one task number. Try: mark <task number>");
-        }
-
-        try {
-            taskNumber = Integer.parseInt(parts[1]);
-        } catch (NumberFormatException e) {
-            throw new HampsterException(
-                    "'" + parts[1] + "' ain't a task number.");
-        }
-
-        if (taskNumber < 1) {
-            throw new HampsterException("Mark doesn't accept negative numbers");
-        }
+        taskNumber = parseTaskNumber(parts, "Mark");
     }
 
     @Override
     public void execute(TaskList tasks, Ui ui) throws HampsterException {
+        assert tasks != null : "Task list must not be null";
+        assert taskNumber >= 1 : "Task numbers are 1-based";
+        assert taskNumber <= tasks.size() : "Task number must be within the current list";
+
         if (taskNumber > tasks.size()) {
             throw new HampsterException("Task " + taskNumber + " doesn't exist.");
         }
