@@ -31,6 +31,9 @@ public class Event extends Task {
             LocalDateTime to
     ) {
         super(done, description);
+        assert from != null : "Event start time must not be null";
+        assert to != null : "Event end time must not be null";
+        assert !to.isBefore(from) : "Event end time must not be before start time";
         this.from = from;
         this.to = to;
     }
