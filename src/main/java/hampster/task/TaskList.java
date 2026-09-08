@@ -28,9 +28,12 @@ public class TaskList extends ArrayList<Task> {
 
     /** Finds tasks whose descriptions contain the specified keyword. */
     public TaskList find(String keyword) {
+        assert keyword != null : "Search keyword must not be null";
+
         TaskList matchingTasks = new TaskList();
 
         for (Task task : this) {
+            assert task != null : "Task list must not contain null entries";
             if (task.description.contains(keyword)) {
                 matchingTasks.add(task);
             }

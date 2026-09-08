@@ -15,6 +15,10 @@ public class MarkCommand extends Command {
 
     @Override
     public void execute(TaskList tasks, Ui ui) throws HampsterException {
+        assert tasks != null : "Task list must not be null";
+        assert taskNumber >= 1 : "Task numbers are 1-based";
+        assert taskNumber <= tasks.size() : "Task number must be within the current list";
+
         if (taskNumber > tasks.size()) {
             throw new HampsterException("Task " + taskNumber + " doesn't exist.");
         }

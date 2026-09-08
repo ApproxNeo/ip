@@ -28,7 +28,12 @@ public class CommandParser {
      *         contains invalid arguments
      */
     public static Command parse(String userInput) throws HampsterException {
-        String[] parts = userInput.trim().split("\\s+");
+        assert userInput != null : "User input must not be null";
+        String trimmedInput = userInput.trim();
+        assert !trimmedInput.isEmpty() : "User input must not be blank";
+
+        String[] parts = trimmedInput.split("\\s+");
+        assert parts.length > 0 : "Parser must always produce at least one token";
 
         String cmd = parts[0].toUpperCase();
 
