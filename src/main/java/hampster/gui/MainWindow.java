@@ -1,6 +1,8 @@
 package hampster.gui;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
 
 import hampster.command.Command;
 import hampster.exception.HampsterException;
@@ -8,6 +10,7 @@ import hampster.parser.CommandParser;
 import hampster.storage.Storage;
 import hampster.task.TaskList;
 import hampster.ui.Ui;
+import javafx.application.Platform;
 import javafx.fxml.FXML;
 import javafx.geometry.Pos;
 import javafx.scene.control.Label;
@@ -31,12 +34,13 @@ public class MainWindow extends AnchorPane {
 
     private TaskList tasks;
 
+    /** Messages produced by the current command, combined into one response. */
+    private final List<String> responseBuffer = new ArrayList<>();
+
     private final Ui outputUi = new Ui() {
         @Override
         public void showMessage(String... messages) {
-            for (String message : messages) {
-                dialogContainer.getChildren().add(createMessage(message, false));
-            }
+            responseBuffer.addAll(List.of(messages));
         }
 
         @Override
@@ -53,16 +57,15 @@ public class MainWindow extends AnchorPane {
     /** Initializes bindings for the main window controls. */
     @FXML
     public void initialize() {
-        scrollPane.vvalueProperty().bind(dialogContainer.heightProperty());
-
         try {
             tasks = Storage.load();
         } catch (IOException exception) {
             tasks = new TaskList();
         }
 
-        dialogContainer.getChildren().add(createMessage(
-                "Heh Heh Wasup broh I'm Hampster.\nWhaddya want?", false));
+        addMessage("Heh Heh Wasup broh I'm Hampster.\nWhaddya want?",
+                MessageKind.HAMPSTER);
+        Platform.runLater(userInput::requestFocus);
     }
 
     /** Handles a command submitted through the GUI input field. */
@@ -74,30 +77,58 @@ public class MainWindow extends AnchorPane {
             return;
         }
 
-        dialogContainer.getChildren().add(createMessage(input, true));
+        addMessage(input, MessageKind.USER);
         userInput.clear();
 
         try {
             Command command = CommandParser.parse(input);
             command.execute(tasks, outputUi);
+            if (!responseBuffer.isEmpty()) {
+                addMessage(String.join("\n", responseBuffer), MessageKind.HAMPSTER);
+            }
             Storage.save(tasks);
         } catch (HampsterException exception) {
-            dialogContainer.getChildren().add(createMessage(
-                    "Broh... " + exception.getMessage(), false));
+            addMessage("Broh... " + exception.getMessage(), MessageKind.ERROR);
+        } finally {
+            responseBuffer.clear();
         }
     }
 
-    /** Creates a styled chat message for the selected speaker. */
-    private HBox createMessage(String message, boolean fromUser) {
+    /** Adds a message and keeps the newest conversation entry visible. */
+    private void addMessage(String message, MessageKind kind) {
+        dialogContainer.getChildren().add(createMessage(message, kind));
+        Platform.runLater(() -> scrollPane.setVvalue(1.0));
+    }
+
+    /** Creates a styled conversation message for the selected message kind. */
+    private HBox createMessage(String message, MessageKind kind) {
         Label label = new Label(message);
         label.setWrapText(true);
-        label.setMaxWidth(280.0);
-        label.getStyleClass().add(fromUser ? "user-message" : "hampster-message");
+        label.maxWidthProperty().bind(dialogContainer.widthProperty().multiply(
+                kind == MessageKind.USER ? 0.78 : 0.92));
+        label.getStyleClass().add(kind.getStyleClass());
 
         HBox box = new HBox(label);
-        box.setAlignment(fromUser ? Pos.TOP_RIGHT : Pos.TOP_LEFT);
+        box.setAlignment(kind == MessageKind.USER ? Pos.TOP_RIGHT : Pos.TOP_LEFT);
         box.setMaxWidth(Double.MAX_VALUE);
         box.getStyleClass().add("message-row");
         return box;
+    }
+
+    /** Describes who produced a message and how it should be styled. */
+    private enum MessageKind {
+        USER("user-message"),
+        HAMPSTER("hampster-message"),
+        ERROR("error-message");
+
+        private final String styleClass;
+
+        MessageKind(String styleClass) {
+            this.styleClass = styleClass;
+        }
+
+        String getStyleClass() {
+            return styleClass;
+        }
     }
 }
