@@ -27,18 +27,17 @@ public class ToDoCommand extends Command {
 
         if (description.isEmpty()) {
             throw new HampsterException(
-                    "ToDo needs a description.");
+                    "I require a task description before I add it to my master plan.");
         }
     }
 
     @Override
     public void execute(TaskList tasks, Ui ui) {
-        System.out.println(description);
         tasks.add(new ToDo(false, description, tag));
 
         ui.showMessage(
-            "\tAight, added that todo broh.",
+            "\tExcellent. Another task for my evil little empire.",
             "\t" + tasks.get(tasks.size() - 1),
-            "\tYou've got " + tasks.size() + " tasks now.");
+            "\tMy empire now contains " + tasks.size() + " tasks.");
     }
 }

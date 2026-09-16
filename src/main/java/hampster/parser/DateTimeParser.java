@@ -28,7 +28,7 @@ public final class DateTimeParser {
 
     /** Error message used when a date-time does not match its expected format. */
     private static final String INVALID_DATETIME_MESSAGE =
-            "Datetimes needs to be in d/M/uuuu HHmm (e.g. 2/12/2019 1800)";
+            "That date-time is unworthy of my dossier. Use d/M/uuuu HHmm (e.g. 2/12/2019 1800).";
 
     /**
      * Parses a user-entered date-time string.

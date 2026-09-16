@@ -15,7 +15,7 @@ public class UntagCommand extends Command {
     /** Creates an untag command from the user's input parts. */
     public UntagCommand(String[] parts) throws HampsterException {
         if (parts.length != 3) {
-            throw new HampsterException("Untag needs a task number and one tag.");
+            throw new HampsterException("Untag requires a task number and one brand to erase.");
         }
         taskNumber = parseTaskNumber(new String[] {parts[0], parts[1]}, "Untag");
         tag = TagParser.normalize(parts[2]);
@@ -24,13 +24,13 @@ public class UntagCommand extends Command {
     @Override
     public void execute(TaskList tasks, Ui ui) throws HampsterException {
         if (taskNumber > tasks.size()) {
-            throw new HampsterException("Task " + taskNumber + " doesn't exist.");
+            throw new HampsterException("Task " + taskNumber + " has escaped my lair.");
         }
 
         Task task = tasks.get(taskNumber - 1);
         if (task.getTag().equals(tag)) {
             task.removeTag();
         }
-        ui.showMessage("\tTag removed.", "\t" + task);
+        ui.showMessage("\tBrand erased. The dossier is mine again.", "\t" + task);
     }
 }

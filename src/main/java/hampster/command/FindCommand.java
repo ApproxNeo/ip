@@ -13,7 +13,7 @@ public class FindCommand extends Command {
     public FindCommand(String[] parts) throws HampsterException {
         if (parts.length != 2) {
             throw new HampsterException(
-                    "Find command requires exactly one keyword.");
+                    "Find requires exactly one keyword for my secret search.");
         }
 
         keyword = parts[1];
@@ -23,7 +23,11 @@ public class FindCommand extends Command {
     public void execute(TaskList tasks, Ui ui) {
         TaskList matchingTasks = tasks.find(keyword);
 
-        ui.showMessage("\tHere are the matching tasks broh:");
+        ui.showMessage("\tMy spies found these tasks in the dossier:");
+
+        if (matchingTasks.size() == 0) {
+            ui.showMessage("\tNothing escaped into the dossier. Try another keyword.");
+        }
 
         for (int i = 0; i < matchingTasks.size(); i++) {
             ui.showMessage("\t" + (i + 1) + ". " + matchingTasks.get(i));

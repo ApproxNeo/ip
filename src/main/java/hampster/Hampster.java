@@ -30,14 +30,14 @@ public class Hampster {
 
             try {
                 if (userInput.isBlank()) {
-                    throw new HampsterException("You didn't say anything.");
+                    throw new HampsterException("Silence? How delightfully ominous. Give me a command, minion.");
                 }
 
                 Command command = CommandParser.parse(userInput);
                 command.execute(tasks, ui);
                 Storage.save(tasks);
             } catch (HampsterException exception) {
-                ui.showMessage("\tBroh... " + exception.getMessage());
+                ui.showMessage("\tPathetic! That command has failed: " + exception.getMessage());
             }
 
             ui.printLine();

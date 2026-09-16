@@ -57,13 +57,17 @@ public class MainWindow extends AnchorPane {
     /** Initializes bindings for the main window controls. */
     @FXML
     public void initialize() {
+        dialogContainer.heightProperty().addListener((observable, oldHeight, newHeight) ->
+                scrollToLatestMessage());
+
         try {
             tasks = Storage.load();
         } catch (IOException exception) {
             tasks = new TaskList();
         }
 
-        addMessage("Heh Heh Wasup broh I'm Hampster.\nWhaddya want?",
+        addMessage("Heh heh... I'm Hampster, your tiny evil task overlord.\n"
+                        + "Welcome to my lair, minion. What shall we conquer?",
                 MessageKind.HAMPSTER);
         Platform.runLater(userInput::requestFocus);
     }
@@ -88,7 +92,7 @@ public class MainWindow extends AnchorPane {
             }
             Storage.save(tasks);
         } catch (HampsterException exception) {
-            addMessage("Broh... " + exception.getMessage(), MessageKind.ERROR);
+            addMessage("Pathetic! That command has failed: " + exception.getMessage(), MessageKind.ERROR);
         } finally {
             responseBuffer.clear();
         }
@@ -97,7 +101,17 @@ public class MainWindow extends AnchorPane {
     /** Adds a message and keeps the newest conversation entry visible. */
     private void addMessage(String message, MessageKind kind) {
         dialogContainer.getChildren().add(createMessage(message, kind));
-        Platform.runLater(() -> scrollPane.setVvalue(1.0));
+        scrollToLatestMessage();
+    }
+
+    /** Scrolls after layout so the newest message is visible at the bottom. */
+    private void scrollToLatestMessage() {
+        Platform.runLater(() -> {
+            dialogContainer.applyCss();
+            dialogContainer.layout();
+            scrollPane.layout();
+            scrollPane.setVvalue(1.0);
+        });
     }
 
     /** Creates a styled conversation message for the selected message kind. */

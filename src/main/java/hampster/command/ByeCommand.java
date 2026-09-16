@@ -10,7 +10,7 @@ public class ByeCommand extends Command {
     /** Creates a bye command and validates that it has no arguments. */
     public ByeCommand(String[] parts) throws HampsterException {
         if (parts.length != 1) {
-            throw new HampsterException("Bye does not accept any arguments");
+            throw new HampsterException("Even my evil plans need exactly zero extra arguments.");
         }
     }
 

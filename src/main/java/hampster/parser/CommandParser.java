@@ -50,7 +50,8 @@ public class CommandParser {
             case "EVENT" -> new EventCommand(parts);
             case "TAG" -> new TagCommand(parts);
             case "UNTAG" -> new UntagCommand(parts);
-            default -> throw new HampsterException("invalid instruction");
+            default -> throw new HampsterException(
+                    "I don't know that command yet. Consult the dossier and try again, minion.");
         };
     }
 }

@@ -28,7 +28,7 @@ public class EventCommand extends Command {
 
         if (input.isEmpty()) {
             throw new HampsterException(
-                    "Events need a description.");
+                    "An event needs a description before I add it to the secret dossier.");
         }
 
         TagParser.ParsedInput parsedInput = TagParser.parseOption(input);
@@ -38,7 +38,7 @@ public class EventCommand extends Command {
 
         if (eventParts.length != 2) {
             throw new HampsterException(
-                    "Events need a /from time. "
+                    "Events require a /from time so I know when the scheme begins.\n"
                             + "Try: event <description> /from <start> /to <end>");
         }
 
@@ -47,7 +47,7 @@ public class EventCommand extends Command {
 
         if (timeParts.length != 2) {
             throw new HampsterException(
-                    "Events need a /to time."
+                    "Events require a /to time so I know when the scheme ends.\n"
                             + "Try: event <description> /from <start> /to <end>");
         }
 
@@ -69,8 +69,8 @@ public class EventCommand extends Command {
     public void execute(TaskList tasks, Ui ui) {
         tasks.add(new Event(false, description, from, to, tag));
 
-        ui.showMessage("\tEvent secured broh.");
+        ui.showMessage("\tEvent entered in the secret dossier. Deliciously organised.");
         ui.showMessage("\t" + tasks.get(tasks.size() - 1));
-        ui.showMessage("\tYou've got " + tasks.size() + " tasks now.");
+        ui.showMessage("\tMy empire now contains " + tasks.size() + " tasks.");
     }
 }

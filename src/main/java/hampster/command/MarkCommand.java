@@ -20,16 +20,16 @@ public class MarkCommand extends Command {
         assert taskNumber <= tasks.size() : "Task number must be within the current list";
 
         if (taskNumber > tasks.size()) {
-            throw new HampsterException("Task " + taskNumber + " doesn't exist.");
+            throw new HampsterException("Task " + taskNumber + " has escaped my lair.");
         }
 
-        if (tasks.get(taskNumber).toggleState()) {
-            ui.showMessage("\tBoom. Task " + taskNumber + " is donezo.");
+        if (tasks.get(taskNumber - 1).toggleState()) {
+            ui.showMessage("\tExcellent. Task " + taskNumber + " has been conquered.");
         } else {
-            ui.showMessage("\tAight. Task " + taskNumber + " is back in action.");
+            ui.showMessage("\tCurses! Task " + taskNumber + " has escaped. Recapture it at once.");
         }
 
-        ui.showMessage("\t" + tasks.get(taskNumber));
+        ui.showMessage("\t" + tasks.get(taskNumber - 1));
 
     }
 }

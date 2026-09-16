@@ -15,7 +15,7 @@ public class TagCommand extends Command {
     /** Creates a tag command from the user's input parts. */
     public TagCommand(String[] parts) throws HampsterException {
         if (parts.length != 3) {
-            throw new HampsterException("Tag needs a task number and one tag.");
+            throw new HampsterException("Tag requires a task number and one brand for the dossier.");
         }
         taskNumber = parseTaskNumber(new String[] {parts[0], parts[1]}, "Tag");
         tag = TagParser.normalize(parts[2]);
@@ -25,12 +25,12 @@ public class TagCommand extends Command {
     public void execute(TaskList tasks, Ui ui) throws HampsterException {
         Task task = getTask(tasks);
         task.setTag(tag);
-        ui.showMessage("\tTag added.", "\t" + task);
+        ui.showMessage("\tBrand applied. This task now belongs to Hampster.", "\t" + task);
     }
 
     private Task getTask(TaskList tasks) throws HampsterException {
         if (taskNumber > tasks.size()) {
-            throw new HampsterException("Task " + taskNumber + " doesn't exist.");
+            throw new HampsterException("Task " + taskNumber + " has escaped my lair.");
         }
         return tasks.get(taskNumber - 1);
     }

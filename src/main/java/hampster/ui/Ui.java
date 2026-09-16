@@ -34,8 +34,8 @@ public class Ui {
         System.out.println(LINE + "\n" +
                 BANNER + "\n" +
                 LINE + "\n" +
-                "\n\tHeh Heh Wasup broh I'm Hampster." + "\n" +
-                "\tWhaddya want?" + "\n" +
+                "\n\tHeh heh... I'm Hampster, your tiny evil task overlord." + "\n" +
+                "\tWelcome to my lair, minion. What shall we conquer?" + "\n" +
                 LINE);
     }
 
@@ -45,7 +45,7 @@ public class Ui {
      * <p>Closing the scanner also closes {@code System.in}.</p>
      */
     public void shutdown() {
-        System.out.println("\tVerabschiedung");
+        System.out.println("\tFlee while you can, minion. Hampster will return!");
         System.out.println();
         scanner.close();
 

@@ -27,7 +27,7 @@ public class DeadlineCommand extends Command {
 
         if (input.isEmpty()) {
             throw new HampsterException(
-                    "Deadlines need a description.");
+                    "A deadline needs a description before I add it to my master plan.");
         }
 
         TagParser.ParsedInput parsedInput = TagParser.parseOption(input);
@@ -37,7 +37,7 @@ public class DeadlineCommand extends Command {
 
         if (deadlineParts.length != 2) {
             throw new HampsterException(
-                    "Deadlines need a /by. "
+                    "Deadlines require a /by marker so I know when to strike.\n"
                             + "Try: deadline <description> /by <date or time>");
         }
 
@@ -54,9 +54,9 @@ public class DeadlineCommand extends Command {
     public void execute(TaskList tasks, Ui ui) {
         tasks.add(new Deadline(false, description, by, tag));
 
-        ui.showMessage("\tDeadline locked in.");
+        ui.showMessage("\tDeadline captured for my master plan.");
         ui.showMessage("\t" + tasks.get(tasks.size() - 1));
-        ui.showMessage("\tYou've got " + tasks.size() + " tasks now.");
+        ui.showMessage("\tMy empire now contains " + tasks.size() + " tasks.");
 
     }
 }

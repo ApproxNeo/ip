@@ -22,7 +22,7 @@ public class Main extends Application {
                     Main.class.getResource("/view/MainWindow.fxml"));
             Scene scene = new Scene(fxmlLoader.load());
 
-            stage.setTitle("Hampster");
+            stage.setTitle("Hampster — Evil Task Lair");
             stage.setMinWidth(360.0);
             stage.setMinHeight(480.0);
             stage.setWidth(520.0);

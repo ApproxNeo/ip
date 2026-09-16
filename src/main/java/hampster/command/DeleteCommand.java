@@ -16,15 +16,15 @@ public class DeleteCommand extends Command {
     @Override
     public void execute(TaskList tasks, Ui ui) throws HampsterException {
         if (taskNumber > tasks.size()) {
-            throw new HampsterException("Task " + taskNumber + " doesn't exist.");
+            throw new HampsterException("Task " + taskNumber + " has escaped my lair.");
         }
 
         String deletedTask = tasks.get(taskNumber - 1).toString();
         tasks.remove(taskNumber - 1);
 
-        ui.showMessage("\tNoted broh. I've removed this task:");
+        ui.showMessage("\tExcellent. This task has been banished from the board:");
         ui.showMessage("\t  " + deletedTask);
-        ui.showMessage("\tNow you've got " + tasks.size() + " tasks in the list.");
+        ui.showMessage("\tMy empire now contains " + tasks.size() + " tasks.");
 
     }
 }
