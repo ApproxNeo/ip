@@ -44,8 +44,7 @@ class DateTimeParserTest {
     @Test
     void parse_impossibleDate_throwsDateTimeParseExceptionWithFormatReminder() {
         DateTimeParseException exception = assertThrows(
-                DateTimeParseException.class,
-                () -> DateTimeParser.parse("30/2/2026 1800")
+                DateTimeParseException.class, () -> DateTimeParser.parse("30/2/2026 1800")
         );
 
         assertTrue(exception.getMessage().contains("d/M/uuuu HHmm"));
