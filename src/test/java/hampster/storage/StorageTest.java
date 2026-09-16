@@ -1,6 +1,7 @@
 package hampster.storage;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 
 import java.io.IOException;
 import java.nio.file.Files;
@@ -208,5 +209,62 @@ class StorageTest {
                     loadedTasks.get(i).saveString()
             );
         }
+    }
+
+    @Test
+    void load_validTags_normalizesTagsForAllTaskTypes() throws IOException {
+        Files.write(DATA_FILE, List.of(
+                "T|0|Tagged todo|#PERSONAL",
+                "D|1|Tagged deadline|Jan 15 2026, 09:00 AM|#SCHOOL",
+                "E|0|Tagged event|Jan 20 2026, 02:00 PM|Jan 20 2026, 03:30 PM|#TEAM"
+        ));
+
+        TaskList tasks = Storage.load();
+
+        assertEquals("#personal", tasks.get(0).getTag());
+        assertEquals("#school", tasks.get(1).getTag());
+        assertEquals("#team", tasks.get(2).getTag());
+    }
+
+    @Test
+    void load_invalidTags_discardsOnlyTheInvalidTag() throws IOException {
+        Files.write(DATA_FILE, List.of(
+                "T|0|Whitespace tag|#bad tag",
+                "T|0|Pipe tag|#bad|tag",
+                "T|0|Unicode tag|#café"
+        ));
+
+        TaskList tasks = Storage.load();
+
+        assertEquals(2, tasks.size());
+        assertEquals("", tasks.get(0).getTag());
+        assertEquals("", tasks.get(1).getTag());
+    }
+
+    @Test
+    void load_invalidStatusOrDescription_skipsInvalidRecords() throws IOException {
+        Files.write(DATA_FILE, List.of(
+                "T|2|Invalid status",
+                "T|0|",
+                "D|x|Invalid status|Jan 15 2026, 09:00 AM",
+                "E|0|Invalid interval|Jan 20 2026, 03:30 PM|Jan 20 2026, 02:00 PM",
+                "T|0|Valid record"
+        ));
+
+        TaskList tasks = Storage.load();
+
+        assertEquals(1, tasks.size());
+        assertEquals("T|0|Valid record|", tasks.get(0).saveString());
+    }
+
+    @Test
+    void save_nullListOrListContainingNull_returnsFalse() {
+        assertFalse(Storage.save(null));
+        List<Task> tasks = new ArrayList<>();
+        tasks.add(new ToDo("valid"));
+        tasks.add(null);
+
+        assertFalse(Storage.save(tasks));
+        assertFalse(Files.exists(DATA_FILE));
     }
 }

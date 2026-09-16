@@ -37,16 +37,22 @@ class DateTimeParserTest {
     }
 
     @Test
+    void parse_nullInput_throwsDateTimeParseExceptionWithFormatReminder() {
+        DateTimeParseException exception = assertThrows(DateTimeParseException.class, () ->
+                DateTimeParser.parse(null));
+
+        assertTrue(exception.getMessage().contains("d/M/uuuu HHmm"));
+    }
+
+    @Test
     void parse_invalidHour_throwsDateTimeParseException() {
         assertThrows(DateTimeParseException.class, () -> DateTimeParser.parse("15/9/2026 2560"));
     }
 
     @Test
     void parse_impossibleDate_throwsDateTimeParseExceptionWithFormatReminder() {
-        DateTimeParseException exception = assertThrows(
-                DateTimeParseException.class,
-                () -> DateTimeParser.parse("30/2/2026 1800")
-        );
+        DateTimeParseException exception = assertThrows(DateTimeParseException.class, () ->
+                DateTimeParser.parse("30/2/2026 1800"));
 
         assertTrue(exception.getMessage().contains("d/M/uuuu HHmm"));
     }
@@ -76,6 +82,14 @@ class DateTimeParserTest {
     @Test
     void parseFromSave_invalidFormatting_throwsDateTimeParseException() {
         assertThrows(DateTimeParseException.class, () -> DateTimeParser.parseFromSave("15/9/2026 1730"));
+    }
+
+    @Test
+    void parseFromSave_nullInput_throwsDateTimeParseExceptionWithFormatReminder() {
+        DateTimeParseException exception = assertThrows(DateTimeParseException.class, () ->
+                DateTimeParser.parseFromSave(null));
+
+        assertTrue(exception.getMessage().contains("MMM dd uuuu, hh:mm a"));
     }
 
     @Test
