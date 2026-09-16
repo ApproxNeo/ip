@@ -60,15 +60,21 @@ public class MainWindow extends AnchorPane {
         dialogContainer.heightProperty().addListener((observable, oldHeight, newHeight) ->
                 scrollToLatestMessage());
 
+        String storageWarning = "";
         try {
             tasks = Storage.load();
         } catch (IOException exception) {
             tasks = new TaskList();
+            storageWarning = "I could not open the dossier, minion. "
+                    + "Starting with an empty task list.";
         }
 
         addMessage("Heh heh... I'm Hampster, your tiny evil task overlord.\n"
                         + "Welcome to my lair, minion. What shall we conquer?",
                 MessageKind.HAMPSTER);
+        if (!storageWarning.isEmpty()) {
+            addMessage(storageWarning, MessageKind.ERROR);
+        }
         Platform.runLater(userInput::requestFocus);
     }
 
@@ -90,7 +96,10 @@ public class MainWindow extends AnchorPane {
             if (!responseBuffer.isEmpty()) {
                 addMessage(String.join("\n", responseBuffer), MessageKind.HAMPSTER);
             }
-            Storage.save(tasks);
+            if (!Storage.save(tasks)) {
+                addMessage("I completed the command, but could not save the dossier.",
+                        MessageKind.ERROR);
+            }
         } catch (HampsterException exception) {
             addMessage("Pathetic! That command has failed: " + exception.getMessage(), MessageKind.ERROR);
         } finally {

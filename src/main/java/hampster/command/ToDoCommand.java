@@ -29,6 +29,11 @@ public class ToDoCommand extends Command {
             throw new HampsterException(
                     "I require a task description before I add it to my master plan.");
         }
+
+        if (description.contains("|")) {
+            throw new HampsterException(
+                    "A task description cannot contain '|'; it would break my dossier.");
+        }
     }
 
     @Override

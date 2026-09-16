@@ -1,10 +1,12 @@
 package hampster.storage;
 
 import java.io.IOException;
+import java.io.UncheckedIOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.stream.Stream;
 
 import hampster.exception.HampsterException;
@@ -31,8 +33,13 @@ public class Storage {
      * {@link Task#saveString()}.</p>
      *
      * @param list the list of tasks to save
+     * @return {@code true} when the data file was saved successfully
      */
-    public static void save(List<Task> list) {
+    public static boolean save(List<Task> list) {
+        if (list == null || list.stream().anyMatch(Objects::isNull)) {
+            return false;
+        }
+
         try {
             List<String> lines = new ArrayList<>();
 
@@ -41,10 +48,10 @@ public class Storage {
             }
 
             Files.write(Path.of(FILE_NAME), lines);
+            return true;
 
-        } catch (IOException e) {
-            System.out.println("Error saving file.");
-            e.printStackTrace();
+        } catch (IOException | SecurityException exception) {
+            return false;
         }
     }
 
@@ -60,17 +67,23 @@ public class Storage {
     public static TaskList load() throws IOException {
         Path path = Path.of(FILE_NAME);
 
-        if (!Files.exists(path)) {
-            return new TaskList();
+        try {
+            if (Files.notExists(path)) {
+                return new TaskList();
+            }
+
+            TaskList tasks = new TaskList();
+
+            try (Stream<String> lines = Files.lines(path)) {
+                lines.forEach(line -> loadLine(line, tasks));
+            }
+
+            return tasks;
+        } catch (SecurityException exception) {
+            throw new IOException("Unable to access the data file.", exception);
+        } catch (UncheckedIOException exception) {
+            throw exception.getCause();
         }
-
-        TaskList tasks = new TaskList();
-
-        try (Stream<String> lines = Files.lines(path)) {
-            lines.forEach(line -> loadLine(line, tasks));
-        }
-
-        return tasks;
     }
 
     /** Loads one non-blank save-file line into the task list. */
@@ -81,7 +94,7 @@ public class Storage {
 
         try {
             tasks.add(parseTask(line));
-        } catch (HampsterException exception) {
+        } catch (HampsterException | RuntimeException exception) {
             System.out.println(
                     "Savefile load() error: " + exception.getMessage()
             );
@@ -119,8 +132,8 @@ public class Storage {
         }
 
         return new ToDo(
-            parts[1].equals("1"),
-            parts[2],
+            parseStatus(parts[1]),
+            parseDescription(parts[2]),
             parseTag(parts, 3)
         );
     }
@@ -144,8 +157,8 @@ public class Storage {
         }
 
         return new Deadline(
-                parts[1].equals("1"),
-                parts[2],
+                parseStatus(parts[1]),
+                parseDescription(parts[2]),
             DateTimeParser.parseFromSave(parts[3]),
             parseTag(parts, 4)
         );
@@ -170,12 +183,31 @@ public class Storage {
         }
 
         return new Event(
-                parts[1].equals("1"),
-                parts[2],
+                parseStatus(parts[1]),
+                parseDescription(parts[2]),
                 DateTimeParser.parseFromSave(parts[3]),
                 DateTimeParser.parseFromSave(parts[4]),
                 parseTag(parts, 5)
         );
+    }
+
+    /** Parses the only two valid task completion values used in storage. */
+    private static boolean parseStatus(String status) throws HampsterException {
+        if (status.equals("0")) {
+            return false;
+        }
+        if (status.equals("1")) {
+            return true;
+        }
+        throw new HampsterException("Invalid task completion status: " + status);
+    }
+
+    /** Rejects blank descriptions that would create unusable tasks. */
+    private static String parseDescription(String description) throws HampsterException {
+        if (description.isBlank()) {
+            throw new HampsterException("Task description cannot be blank.");
+        }
+        return description;
     }
 
     /** Loads a valid tag, silently discarding an invalid stored tag. */

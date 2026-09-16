@@ -43,6 +43,12 @@ public class EventCommand extends Command {
         }
 
         description = eventParts[0].trim();
+
+        if (description.contains("|")) {
+            throw new HampsterException(
+                    "An event description cannot contain '|'; it would break my dossier.");
+        }
+
         String[] timeParts = eventParts[1].split("\\s+/to\\s+", 2);
 
         if (timeParts.length != 2) {
@@ -62,6 +68,11 @@ public class EventCommand extends Command {
         if (description.isEmpty()) {
             throw new HampsterException(
                     "Tell me what the event actually is.");
+        }
+
+        if (!to.isAfter(from)) {
+            throw new HampsterException(
+                    "The event's /to time must be later than its /from time.");
         }
     }
 

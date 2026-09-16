@@ -21,6 +21,9 @@ public class Deadline extends Task {
      */
     public Deadline(boolean done, String description, LocalDateTime by) {
         super(done, description);
+        if (by == null) {
+            throw new IllegalArgumentException("Deadline time must not be null");
+        }
         this.by = by;
     }
 
@@ -32,6 +35,9 @@ public class Deadline extends Task {
             String tag
     ) {
         super(done, description, tag);
+        if (by == null) {
+            throw new IllegalArgumentException("Deadline time must not be null");
+        }
         this.by = by;
     }
 

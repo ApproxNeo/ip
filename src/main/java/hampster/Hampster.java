@@ -22,6 +22,8 @@ public class Hampster {
             tasks = Storage.load();
         } catch (IOException exception) {
             tasks = new TaskList();
+            ui.showMessage(
+                    "\tI could not open the dossier, minion. Starting with an empty task list.");
         }
 
         while (true) {
@@ -35,7 +37,9 @@ public class Hampster {
 
                 Command command = CommandParser.parse(userInput);
                 command.execute(tasks, ui);
-                Storage.save(tasks);
+                if (!Storage.save(tasks)) {
+                    ui.showMessage("\tYour command worked, but I could not save the dossier.");
+                }
             } catch (HampsterException exception) {
                 ui.showMessage("\tPathetic! That command has failed: " + exception.getMessage());
             }

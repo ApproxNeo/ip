@@ -2,6 +2,7 @@ package hampster.parser;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertThrows;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeParseException;
@@ -38,6 +39,16 @@ class DateTimeParserTest {
     @Test
     void parse_invalidHour_throwsDateTimeParseException() {
         assertThrows(DateTimeParseException.class, () -> DateTimeParser.parse("15/9/2026 2560"));
+    }
+
+    @Test
+    void parse_impossibleDate_throwsDateTimeParseExceptionWithFormatReminder() {
+        DateTimeParseException exception = assertThrows(
+                DateTimeParseException.class,
+                () -> DateTimeParser.parse("30/2/2026 1800")
+        );
+
+        assertTrue(exception.getMessage().contains("d/M/uuuu HHmm"));
     }
 
     @Test

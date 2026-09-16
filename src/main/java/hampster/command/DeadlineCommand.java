@@ -43,6 +43,16 @@ public class DeadlineCommand extends Command {
 
         description = deadlineParts[0].trim();
 
+        if (description.isEmpty()) {
+            throw new HampsterException(
+                    "I require a deadline description for my master plan.");
+        }
+
+        if (description.contains("|")) {
+            throw new HampsterException(
+                    "A deadline description cannot contain '|'; it would break my dossier.");
+        }
+
         try {
             by = DateTimeParser.parse(deadlineParts[1]);
         } catch (DateTimeParseException e) {

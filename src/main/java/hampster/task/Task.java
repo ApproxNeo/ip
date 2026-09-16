@@ -36,8 +36,9 @@ public abstract class Task {
      * @param tag the optional task tag
      */
     protected Task(boolean done, String description, String tag) {
-        assert description != null : "Task description must not be null";
-        assert !description.isBlank() : "Task description must not be blank";
+        if (description == null || description.isBlank()) {
+            throw new IllegalArgumentException("Task description must not be blank");
+        }
         this.description = description;
         this.done = done;
         this.tag = tag == null ? "" : tag;

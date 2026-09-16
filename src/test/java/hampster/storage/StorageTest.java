@@ -131,6 +131,7 @@ class StorageTest {
         Files.write(DATA_FILE, List.of(
                 "T|0|Attend tutorial consultation",
                 "D|0|Renew student pass",
+                "D|0|Impossible date|Feb 30 2026, 05:00 PM",
                 "E|0|Group project meeting|Jan 20 2026, 02:00 PM",
                 "X|0|Unsupported task type",
                 "T|1|Complete database revision"
